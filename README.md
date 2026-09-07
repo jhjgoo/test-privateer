@@ -40,6 +40,10 @@ npx skills add jhjgoo/heuristic-testing-skills --list
 - `modeling-tests-with-ppdcs`
 - `writing-unit-tests`
 
+接口／页面自动化目前提供测试设计入口，均通过 `designing-test-automation` 使用；框架接入、脚本编写暂未实现。单元测试可使用 `writing-unit-tests` 编写并验证；已有测试可在授权范围内执行。
+
+Skill 按当前任务与信息缺口协作，不按职业或资历分流。测试设计、执行准备和实际结果分别说明；具体用例写好不代表目标版本与环境已就绪。
+
 ## Skill 清单
 
 | 阶段 | Skill |
@@ -69,3 +73,7 @@ npx skills update
 ## License
 
 [MIT](LICENSE)
+
+## 测试文档
+
+持久化时，每个需求使用共同稳定前缀的 `-test-analysis.md` 与 `-test-cases.md`；详细依据和模型按需放 `-test-basis.md`。已有需求目录直接沿用，否则放 `testing/requirements/<前缀>/`。项目地图仍为唯一 `testing/TCO.md`。分析保留全体已识别测试点、动态风险和当前行动；用例开始设计时创建，执行证据单独记录。
