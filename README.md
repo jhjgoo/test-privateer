@@ -77,3 +77,5 @@ npx skills update
 ## 测试文档
 
 持久化时，每个需求使用共同稳定前缀的 `-test-analysis.md` 与 `-test-cases.md`；详细依据和模型按需放 `-test-basis.md`。已有需求目录直接沿用，否则放 `testing/requirements/<前缀>/`。项目地图仍为唯一 `testing/TCO.md`。分析保留全体已识别测试点、动态风险和当前行动；用例开始设计时创建，执行证据单独记录。
+
+编号与跨文档追溯统一遵循 [artifact-routing](skills/heuristic-testing/references/artifact-routing.md#统一编号与追溯)。完整分析、独立模型和用例集交付前，Agent自行复核并修正文档错误；只有真正需要业务选择或扩大授权时才提问。

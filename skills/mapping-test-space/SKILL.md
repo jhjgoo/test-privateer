@@ -24,7 +24,7 @@ description: 用于有界测试范围内的产品内容、交互、质量特性�
 
 ## 交付
 
-合并重复内容，保留稳定 ID、来源和关联，返回：
+按 `heuristic-testing/references/artifact-routing.md` 的“统一编号与追溯”合并重复内容、保留编号去向、来源和关联，返回：
 
 - 业务与系统边界；
 - 所选方法及理由；

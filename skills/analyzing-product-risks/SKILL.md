@@ -48,7 +48,7 @@ description: 用于已有产品内容或测试点，但测试重点、深度、�
 
 ## 风险生命周期
 
-记录稳定 ID、场景与业务影响、当前判断和依据、状态、关联测试、最新证据与判断变化、下一步。单一归属按 heuristic-testing 的 artifact-routing 确定。
+读取 `heuristic-testing/references/artifact-routing.md`，按“统一编号与追溯”和风险单一归属记录风险编号、场景与业务影响、当前判断和依据、状态、关联测试、最新证据与判断变化、下一步。
 
 | 状态 | 含义及证据要求 |
 | --- | --- |
