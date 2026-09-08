@@ -7,7 +7,7 @@ description: 用于失败或可疑观察需要复现、影响分析、区分解�
 
 Finding 是值得调查的观察，不等于缺陷，更不等于根因。
 
-沿用原测试项、用例和证据链接；产生新风险或测试项时按 `heuristic-testing/references/artifact-routing.md` 的编号规则维护，已有缺陷平台编号继续引用。
+沿用原测试项、用例和证据链接；产生新风险或测试项时按 `test-privateer/references/artifact-routing.md` 的编号规则维护，已有缺陷平台编号继续引用。
 
 沿用独立／项目路径：独立任务在对话或指定位置交付；项目任务将观察、调查、缺陷证据和残余风险写入对应测试文档，只有长期或跨 Spec 结论才更新 TCO。
 

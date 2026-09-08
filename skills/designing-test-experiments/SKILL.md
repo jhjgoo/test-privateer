@@ -11,7 +11,7 @@ description: 用于已选测试点、测试条件或产品风险需要细化为�
 
 接收调用方选中的候选测试点、TCON 或产品风险，以及业务场景、系统边界和证据目标。一次只展开一个业务结果、一组强相关风险或一批能共同准备和观察的任务。
 
-读取 `heuristic-testing/references/artifact-routing.md` 的“统一编号与追溯”，复用来源测试项并分配用例编号。
+读取 `test-privateer/references/artifact-routing.md` 的“统一编号与追溯”，复用来源测试项并分配用例编号。
 
 当前轮次写清：为什么现在测、要学到什么、包含和排除什么、什么证据会结束本轮或改变下一轮。
 

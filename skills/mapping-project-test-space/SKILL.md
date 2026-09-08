@@ -9,7 +9,7 @@ description: 用于项目测试地图不存在、失真，或不足以判断业�
 
 ## 输入与边界
 
-本 Skill 只用于 `heuristic-testing` 的项目路径。读取 `heuristic-testing/references/artifact-routing.md`，确定项目边界和唯一 `testing/TCO.md`。
+本 Skill 只用于 `test-privateer` 的项目路径。读取 `test-privateer/references/artifact-routing.md`，确定项目边界和唯一 `testing/TCO.md`。
 
 输入包括产品目标、用户与业务流程、架构和代码、接口与数据契约、运行环境、历史缺陷、监控和已有测试资产。PRD 只是证据之一。
 

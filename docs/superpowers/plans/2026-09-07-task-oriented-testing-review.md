@@ -6,7 +6,7 @@
 
 | 位置 | 原指令证据／问题 | 修改及复核 |
 | --- | --- | --- |
-| heuristic-testing/SKILL.md；clarifying-test-basis/SKILL.md | “你是测试人员的探索搭档”“当前协作者通常是测试人员”将职称与协作权限混用 | 按任务协作；按实际责任、证据和已有授权判断 |
+| test-privateer/SKILL.md；clarifying-test-basis/SKILL.md | “你是测试人员的探索搭档”“当前协作者通常是测试人员”将职称与协作权限混用 | 按任务协作；按实际责任、证据和已有授权判断 |
 | clarifying-test-basis/SKILL.md | “首次共同探索……然后等待回答”与用户要求自主分析、局部未知可继续的需求冲突 | 关键歧义等待；自主分析保留假设；未知只阻塞相关部分 |
 | modeling-tests-with-ppdcs/SKILL.md | 仅强调返回业务化测试点，可能使下游失去实际模型 | 下游取得模型、覆盖准则与来源；用户展示按需 |
 | designing-test-experiments/SKILL.md | “状态只能取一个值”缺少未核实状态，且促使按状态重复拆用例 | 允许记录真实多项缺口，区分未核实与已知未实现；设计完成与执行就绪分别说明 |

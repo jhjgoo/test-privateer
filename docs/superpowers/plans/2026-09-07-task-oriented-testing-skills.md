@@ -37,7 +37,7 @@
 
 ## 2. 共同探索的交互规则
 
-修改 heuristic-testing、setting-test-mission、clarifying-test-basis。
+修改 test-privateer、setting-test-mission、clarifying-test-basis。
 
 - 已明确的目标直接沿用。宽泛请求先用最少调查形成具体理解，再确认会改变本轮产物的目标。
 - 首轮问题从真实业务例子出发：谁做了什么、什么信息不足、答案会改变哪项测试。不要求用户理解方法缩写或选择职业模式。
@@ -166,9 +166,9 @@
 
 | 批次 | 文件 | 完成标准 |
 | --- | --- | --- |
-| 1：通用职责与共同探索 | heuristic-testing、setting-test-mission、clarifying-test-basis | 不按职称路由或判定权限；目标明确直接推进，关键歧义带例子询问 |
+| 1：通用职责与共同探索 | test-privateer、setting-test-mission、clarifying-test-basis | 不按职称路由或判定权限；目标明确直接推进，关键歧义带例子询问 |
 | 2：分析与交付衔接 | analyzing-change-for-testing、modeling-tests-with-ppdcs、designing-test-experiments、challenging-test-designs | 模型向下游完整交接；正文适配用途；预期有来源；区分设计完成与执行就绪；下一步点名具体产物 |
-| 3：自动化入口 | heuristic-testing、designing-test-automation、writing-unit-tests | 单元测试优化照常；接口／页面入口有明确设计产物、框架待接入说明和停止边界，不新增编写 Skill |
+| 3：自动化入口 | test-privateer、designing-test-automation、writing-unit-tests | 单元测试优化照常；接口／页面入口有明确设计产物、框架待接入说明和停止边界，不新增编写 Skill |
 | 4：执行和资产 | running-test-sessions、investigating-findings、artifact-routing.md | 独立／项目路径均可工作；执行条件核实与授权分开；未知不误标缺失；失败分类和修复范围明确 |
 | 5：发布材料 | README.md、docs/guide.md、本地对应安装副本 | 标明接口／页面仅为设计入口；不将入口计为两个新增 Skill；示例和本地内容与实际能力一致 |
 

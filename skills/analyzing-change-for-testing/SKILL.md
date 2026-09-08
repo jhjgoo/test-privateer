@@ -9,7 +9,7 @@ description: 用于项目中的需求、设计、代码或 Spec 变化需要分�
 
 ## 前置条件
 
-读取 `heuristic-testing/references/artifact-routing.md`，据其适用条件确定是否维护项目地图；读取当前变化依据、相关项目资料和已有测试资产。需要 TCO 时使用 `mapping-project-test-space` 建立或补齐。一次性分析可使用相关项目证据，说明实际调查范围和未知；缺少 TCO 文件本身不等于上下文不足。
+读取 `test-privateer/references/artifact-routing.md`，据其适用条件确定是否维护项目地图；读取当前变化依据、相关项目资料和已有测试资产。需要 TCO 时使用 `mapping-project-test-space` 建立或补齐。一次性分析可使用相关项目证据，说明实际调查范围和未知；缺少 TCO 文件本身不等于上下文不足。
 
 先确定变化处于研发前、开发中、可运行还是已执行。阶段无法从证据确定，且会改变测试对象、oracle 或产物性质时，先询问用户。
 
