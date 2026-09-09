@@ -1,2 +1,5 @@
+interface:
+  display_name: "Test Privateer"
+  short_description: "Route product testing work"
 policy:
   allow_implicit_invocation: false

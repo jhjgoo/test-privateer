@@ -26,13 +26,13 @@
 这套工具包含 18 个 Skill，主入口会按需要调用其他组件。安装全集：
 
 ```bash
-npx skills add jhjgoo/test-privateer-skills --skill '*'
+npx skills add jhjgoo/test-privateer --skill '*'
 ```
 
 安装到 Codex 全局目录：
 
 ```bash
-npx skills add jhjgoo/test-privateer-skills --skill '*' --agent codex --global --yes
+npx skills add jhjgoo/test-privateer --skill '*' --agent codex --global --yes
 ```
 
 首次可以这样说：
