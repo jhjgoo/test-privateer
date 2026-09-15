@@ -83,6 +83,7 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | 产品事实、业务链、系统关系或判定依据（oracle）不清 | `clarifying-test-basis` |
 | 项目测试地图不足 | `mapping-project-test-space` |
 | 当前项目变化分析不足 | `analyzing-change-for-testing` |
+| SDD 变更包需要实施前、实施后或归档前的质量关口 | `challenging-change-specs` |
 | 有界范围的测试空间不清 | `mapping-test-space` |
 | 测试重点、深度、顺序或投入不清 | `analyzing-product-risks` |
 | 复杂流程、规则、数据、组合或状态需要模型 | `modeling-tests-with-ppdcs` |
