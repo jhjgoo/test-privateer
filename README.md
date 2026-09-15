@@ -6,7 +6,7 @@
 
 ## 安装
 
-这是一套由 18 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
+这是一套由 19 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
 
 ```bash
 # 交互式安装
@@ -74,6 +74,7 @@ Skill 按当前任务与信息缺口协作，不按职业或资历分流。测�
 | 测试空间 | `mapping-test-space`, `scanning-product-with-sfdipot`, `analyzing-test-space-with-mfq` |
 | 风险与模型 | `analyzing-product-risks`, `modeling-tests-with-ppdcs` |
 | 测试设计 | `designing-test-experiments`, `writing-unit-tests`, `challenging-test-designs` |
+| 交付格式 | `exporting-test-cases-to-xmind` |
 | 执行与发现 | `running-test-sessions`, `investigating-findings` |
 | 回归与自动化 | `selecting-regression-tests`, `designing-test-automation` |
 | 证据与信心 | `assessing-test-confidence` |
