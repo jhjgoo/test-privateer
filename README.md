@@ -33,6 +33,8 @@ npx skills add jhjgoo/test-privateer --list
 
 第一次使用请阅读[《海盗派黑帆测试官：方法与 Skill 使用教程》](docs/guide.md)。它通过完整案例讲解这套测试方法，以及何时调用哪个 Skill、应取得什么产物、何时停止或转向。
 
+研发同学可从[《研发使用教程：从接需求到提测》](docs/developer-guide.md)开始，按开发阶段选择任务，直接复制示例提示词。
+
 也可以直接调用方法 Skill，例如：
 
 - `scanning-product-with-sfdipot`
