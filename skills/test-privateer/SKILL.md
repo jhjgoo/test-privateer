@@ -84,6 +84,8 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | 项目测试地图不足 | `mapping-project-test-space` |
 | 当前项目变化分析不足 | `analyzing-change-for-testing` |
 | SDD 变更包需要实施前、实施后或归档前的质量关口 | `challenging-change-specs` |
+| Prompt、Skill、工具描述或 Agent 指令需要审查、比较、失败诊断或模型适配 | `prompt-eval` |
+| Agent 整体质量、轨迹、稳定性、评估方案或版本比较需要质检 | `agent-eval` |
 | 有界范围的测试空间不清 | `mapping-test-space` |
 | 测试重点、深度、顺序或投入不清 | `analyzing-product-risks` |
 | 复杂流程、规则、数据、组合或状态需要模型 | `modeling-tests-with-ppdcs` |
