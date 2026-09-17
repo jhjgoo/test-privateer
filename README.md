@@ -6,7 +6,7 @@
 
 ## 安装
 
-这是一套由 20 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
+这是一套由 22 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
 
 ```bash
 # 交互式安装
@@ -43,6 +43,8 @@ npx skills add jhjgoo/test-privateer --list
 - `writing-unit-tests`
 - `investigating-findings`：调查异常、性能回归和可疑结果，区分观察、缺陷和原因
 - `challenging-change-specs`：审查 SDD 变更包的意图、规格、设计、任务和证据链
+- `prompt-eval`：审查 Prompt、Skill 和工具描述在目标模型与宿主下的行为质量
+- `agent-eval`：质检完整 Agent 的结果、合规、轨迹、稳定性和评估证据
 
 接口／页面自动化目前提供测试设计入口，均通过 `designing-test-automation` 使用；框架接入、脚本编写暂未实现。单元测试可使用 `writing-unit-tests` 编写并验证；已有测试可在授权范围内执行。
 
@@ -74,6 +76,7 @@ Skill 按当前任务与信息缺口协作，不按职业或资历分流。测�
 | 主入口 | `test-privateer` |
 | 使命与上下文 | `setting-test-mission`, `clarifying-test-basis` |
 | 项目与变化 | `mapping-project-test-space`, `analyzing-change-for-testing`, `challenging-change-specs` |
+| Agent 与 Prompt 质检 | `prompt-eval`, `agent-eval` |
 | 测试空间 | `mapping-test-space`, `scanning-product-with-sfdipot`, `analyzing-test-space-with-mfq` |
 | 风险与模型 | `analyzing-product-risks`, `modeling-tests-with-ppdcs` |
 | 测试设计 | `designing-test-experiments`, `writing-unit-tests`, `challenging-test-designs` |

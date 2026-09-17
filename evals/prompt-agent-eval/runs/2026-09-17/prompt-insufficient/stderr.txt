@@ -1,0 +1,29 @@
+Reading additional input from stdin...
+2026-09-17T04:20:27.111051Z  WARN codex_models_manager::model_info: Unknown model gpt-6-astra is used. This will use fallback model metadata.
+2026-09-17T04:20:27.112539Z  WARN codex_core_plugins::manifest: ignoring hooks: expected a string, string array, object, or object array; found object
+2026-09-17T04:20:27.112833Z  WARN codex_core_plugins::manifest: ignoring hooks: expected a string, string array, object, or object array; found object
+2026-09-17T04:20:27.112925Z  WARN codex_core_plugins::manifest: ignoring hooks: expected a string, string array, object, or object array; found object
+2026-09-17T04:20:27.113110Z  WARN codex_core_plugins::manifest: ignoring hooks: expected a string, string array, object, or object array; found object
+2026-09-17T04:20:27.124992Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-17T04:20:27.125010Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+2026-09-17T04:20:27.128619Z  WARN codex_core_plugins::manifest: ignoring hooks: expected a string, string array, object, or object array; found object
+2026-09-17T04:20:27.128759Z  WARN codex_core_plugins::manifest: ignoring hooks: expected a string, string array, object, or object array; found object
+2026-09-17T04:20:27.235106Z  WARN codex_models_manager::model_info: Unknown model gpt-6-astra is used. This will use fallback model metadata.
+2026-09-17T04:20:28.392202Z  WARN codex_core_plugins::manager: failed to warm featured plugin ids cache error=remote featured plugin request to https://chatgpt.com/backend-api/plugins/featured?platform=codex failed with status 401 Unauthorized: {"detail":"Unauthorized"}
+2026-09-17T04:20:46.187233Z  WARN codex_core_plugins::startup_sync: git sync failed for curated plugin sync; falling back to GitHub HTTP error=git fetch curated plugins repo failed with status exit status: 128: fatal: Unable to create '/Users/jianghongjian/.codex/.tmp/plugins/.git/shallow.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.
+2026-09-17T04:20:58.475158Z  WARN codex_core_plugins::startup_sync: GitHub HTTP sync failed for curated plugin sync; skipping export archive fallback because a local curated plugins snapshot already exists error=download curated plugins archive from https://api.github.com/repos/openai/plugins/zipball/1dc195897af4161d039b80d8471ec0a10c9bbc89 failed with status 429 Too Many Requests: The service is temporarily unable to handle this request. Please try again later.
+
+2026-09-17T04:20:58.475359Z  WARN codex_core_plugins::manager: failed to sync curated plugins repo: git sync failed for curated plugin sync: git fetch curated plugins repo failed with status exit status: 128: fatal: Unable to create '/Users/jianghongjian/.codex/.tmp/plugins/.git/shallow.lock': File exists.
+
+Another git process seems to be running in this repository, e.g.
+an editor opened by 'git commit'. Please make sure all processes
+are terminated then try again. If it still fails, a git process
+may have crashed in this repository earlier:
+remove the file manually to continue.; GitHub HTTP sync failed for curated plugin sync: download curated plugins archive from https://api.github.com/repos/openai/plugins/zipball/1dc195897af4161d039b80d8471ec0a10c9bbc89 failed with status 429 Too Many Requests: The service is temporarily unable to handle this request. Please try again later.
+; export archive fallback skipped because a local curated plugins snapshot already exists

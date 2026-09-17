@@ -23,7 +23,7 @@
 
 ### 安装与首次使用
 
-这套工具包含 18 个 Skill，主入口会按需要调用其他组件。安装全集：
+这套工具包含 22 个 Skill，主入口会按需要调用其他组件。安装全集：
 
 ```bash
 npx skills add jhjgoo/test-privateer --skill '*'
@@ -436,6 +436,8 @@ PPDCS 提供五种选择，按行为选用即可：
 | 澄清业务和系统依据 | `clarifying-test-basis` | 确认信息、未知及取证动作 |
 | 维护项目地图 | `mapping-project-test-space` | 项目 TCO |
 | 分析需求或代码变化 | `analyzing-change-for-testing` | 测试分析、风险及完整已识别范围 |
+| 审查 Prompt、Skill 或工具描述 | `prompt-eval` | 当前模型与宿主下的发现、最小修正和验证边界 |
+| 质检 Agent 或现有评估方案 | `agent-eval` | Agent 质量风险、评估证据和补测建议 |
 | 选择扫描方法 | `mapping-test-space` | 有组织的候选测试空间 |
 | 广扫产品元素 | `scanning-product-with-sfdipot` | 元素、关系与未知 |
 | 组织能力、交互和质量关注 | `analyzing-test-space-with-mfq` | MFQ 覆盖大纲 |
