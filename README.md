@@ -42,7 +42,7 @@ npx skills add jhjgoo/test-privateer --list
 - `modeling-tests-with-ppdcs`
 - `writing-unit-tests`
 - `investigating-findings`：调查异常、性能回归和可疑结果，区分观察、缺陷和原因
-- `challenging-change-specs`：审查 SDD 变更包的意图、规格、设计、任务和证据链
+- `checking-solutions`：质检研发、修复和实施方案中的样例耦合、作用点错位与证据链断点；SDD 变更包额外检查规格、任务、实现和归档契约链
 - `prompt-eval`：审查 Prompt、Skill 和工具描述在目标模型与宿主下的行为质量
 - `agent-eval`：质检完整 Agent 的结果、合规、轨迹、稳定性和评估证据
 
@@ -75,7 +75,7 @@ Skill 按当前任务与信息缺口协作，不按职业或资历分流。测�
 | --- | --- |
 | 主入口 | `test-privateer` |
 | 使命与上下文 | `setting-test-mission`, `clarifying-test-basis` |
-| 项目与变化 | `mapping-project-test-space`, `analyzing-change-for-testing`, `challenging-change-specs` |
+| 项目与变化 | `mapping-project-test-space`, `analyzing-change-for-testing`, `checking-solutions` |
 | Agent 与 Prompt 质检 | `prompt-eval`, `agent-eval` |
 | 测试空间 | `mapping-test-space`, `scanning-product-with-sfdipot`, `analyzing-test-space-with-mfq` |
 | 风险与模型 | `analyzing-product-risks`, `modeling-tests-with-ppdcs` |

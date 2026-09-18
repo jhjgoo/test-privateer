@@ -83,7 +83,7 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | 产品事实、业务链、系统关系或判定依据（oracle）不清 | `clarifying-test-basis` |
 | 项目测试地图不足 | `mapping-project-test-space` |
 | 当前项目变化分析不足 | `analyzing-change-for-testing` |
-| SDD 变更包需要实施前、实施后或归档前的质量关口 | `challenging-change-specs` |
+| AI 已形成研发／修复／实施方案，或 SDD 变更包需要交付前、实施后、归档前质检 | `checking-solutions`；SDD 由其加载契约链加深检查 |
 | Prompt、Skill、工具描述或 Agent 指令需要审查、比较、失败诊断或模型适配 | `prompt-eval` |
 | Agent 整体质量、轨迹、稳定性、评估方案或版本比较需要质检 | `agent-eval` |
 | 有界范围的测试空间不清 | `mapping-test-space` |
@@ -103,6 +103,8 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 用户直接点名 SFDIPOT、MFQ、产品风险或 PPDCS 时，分别使用 `scanning-product-with-sfdipot`、`analyzing-test-space-with-mfq`、`analyzing-product-risks` 或 `modeling-tests-with-ppdcs`。只补足该方法所需上下文，交付其约定产物后停止。
 
 ## 跨入执行
+
+当前任务产出了方案草稿或用户提供待检方案时，在最终交付或跨入实施前使用 `checking-solutions`；先完成原任务需要的方案草稿，再质检并修正有证据的断点。需求分析、原因调查和测试设计本身不因此自动变成方案质检，已有专项 Skill 的职责不被替代。
 
 交付前核对路线状态、下一产物、实际文件路径、链接、编号关联和未执行声明均可找到。计划或阶段标记“完成”时必须附实际检查或运行证据；预期结果、文件清单和“应通过”不算验证。项目任务应能指出项目测试上下文总览（TCO）、需求分析和必要用例文件；没有写入权限或用户要求只在对话交付时，明确说明未写入原因和边界。
 
