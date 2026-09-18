@@ -35,6 +35,8 @@ npx skills add jhjgoo/test-privateer --list
 
 研发同学可从[《研发使用教程：从接需求到提测》](docs/developer-guide.md)开始，按开发阶段选择任务，直接复制示例提示词。
 
+开发 Prompt、Skill 或 Agent 时，可阅读[《Prompt 与 Agent 评测实战教程》](docs/prompt-agent-eval-guide.md)，按实际失败选择 `prompt-eval` 或 `agent-eval`，并判断评测证据能支持什么结论。
+
 也可以直接调用方法 Skill，例如：
 
 - `scanning-product-with-sfdipot`

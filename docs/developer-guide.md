@@ -123,6 +123,8 @@ Workbuddy 用户可在已安装的“黑帆测试官”中使用下面的话术�
 
 `prompt-eval` 关注 Prompt 在当前模型、宿主和任务中的适配；`agent-eval` 关注完整系统。若 Agent 失败已定位到 Prompt，前者接收失败场景和直接证据继续纠偏；Prompt 修改后再回到系统级场景验证。
 
+需要完整操作步骤、联动案例、可复制提示词和评测证据解读时，阅读[《Prompt 与 Agent 评测实战教程》](prompt-agent-eval-guide.md)。
+
 ## 产物在哪里，下一次如何继续
 
 项目任务维护唯一的 `testing/TCO.md`，汇总业务与系统关系、覆盖情况和长期风险。每个需求的测试分析与用例分别保存，详细依据按需拆分；优先沿用已有需求目录，否则放在 `testing/requirements/<需求前缀>/`。

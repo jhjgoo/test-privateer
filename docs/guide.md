@@ -453,6 +453,8 @@ PPDCS 提供五种选择，按行为选用即可：
 | 选择自动化及设计接口／页面测试 | `designing-test-automation` | 层级选择、测试设计和接入信息 |
 | 评估证据支持程度 | `assessing-test-confidence` | 已支持结论、限制与下一步 |
 
+开发 Prompt、Skill 或 Agent 时，可继续阅读[《Prompt 与 Agent 评测实战教程》](prompt-agent-eval-guide.md)，其中包含选择入口、准备材料、前后对照、Agent 失败归因和可直接复制的提示词。
+
 这些入口可以单独使用。已经有明确规则要写单元测试，就直接进入；执行时发现新的业务歧义，也可以返回澄清。
 
 ## 12. 用手头一个需求练习
