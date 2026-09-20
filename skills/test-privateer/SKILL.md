@@ -86,6 +86,7 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | AI 已形成研发／修复／实施方案，或 SDD 变更包需要交付前、实施后、归档前质检 | `checking-solutions`；SDD 由其加载契约链加深检查 |
 | Prompt、Skill、工具描述或 Agent 指令需要审查、比较、失败诊断或模型适配 | `prompt-eval` |
 | Agent 整体质量、轨迹、稳定性、评估方案或版本比较需要质检 | `agent-eval` |
+| 界面元素与视觉呈现、交互反馈与恢复、无障碍或任务可用性需要专项判断 | `reviewing-ui-ux` |
 | 有界范围的测试空间不清 | `mapping-test-space` |
 | 测试重点、深度、顺序或投入不清 | `analyzing-product-risks` |
 | 复杂流程、规则、数据、组合或状态需要模型 | `modeling-tests-with-ppdcs` |
@@ -101,6 +102,8 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | 需要判断证据强度 | `assessing-test-confidence` |
 
 用户直接点名 SFDIPOT、MFQ、产品风险或 PPDCS 时，分别使用 `scanning-product-with-sfdipot`、`analyzing-test-space-with-mfq`、`analyzing-product-risks` 或 `modeling-tests-with-ppdcs`。只补足该方法所需上下文，交付其约定产物后停止。
+
+直接评审界面与使用体验时，沿用当前任务、人群、材料、阶段及编号进入 `reviewing-ui-ux`；从其他阶段进入时，专项交回判断、证据缺口与下一动作，由调用方继续原阶段。是否调用取决于体验判断缺口；纯接口校验或页面自动化设计沿用各自入口。
 
 ## 跨入执行
 

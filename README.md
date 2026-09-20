@@ -6,7 +6,7 @@
 
 ## 安装
 
-这是一套由 22 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
+这是一套由 23 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
 
 ```bash
 # 交互式安装
@@ -47,6 +47,9 @@ npx skills add jhjgoo/test-privateer --list
 - `checking-solutions`：质检研发、修复和实施方案中的样例耦合、作用点错位与证据链断点；SDD 变更包额外检查规格、任务、实现和归档契约链
 - `prompt-eval`：审查 Prompt、Skill 和工具描述在目标模型与宿主下的行为质量
 - `agent-eval`：质检完整 Agent 的结果、合规、轨迹、稳定性和评估证据
+- `reviewing-ui-ux`：沿用户任务评审元素、样式、交互、无障碍和可用性，选择方法与判定依据，区分观察、风险和待验证行为
+
+UI/UX 专项可直接评审设计稿、截图或已有操作与用户记录，也可提出最小补证动作。它提供方法与证据判断，按需使用宿主已有能力；不要求安装指定工具或引入测试框架。
 
 接口／页面自动化目前提供测试设计入口，均通过 `designing-test-automation` 使用；框架接入、脚本编写暂未实现。单元测试可使用 `writing-unit-tests` 编写并验证；已有测试可在授权范围内执行。
 
@@ -79,6 +82,7 @@ Skill 按当前任务与信息缺口协作，不按职业或资历分流。测�
 | 使命与上下文 | `setting-test-mission`, `clarifying-test-basis` |
 | 项目与变化 | `mapping-project-test-space`, `analyzing-change-for-testing`, `checking-solutions` |
 | Agent 与 Prompt 质检 | `prompt-eval`, `agent-eval` |
+| 界面与使用体验质检 | `reviewing-ui-ux` |
 | 测试空间 | `mapping-test-space`, `scanning-product-with-sfdipot`, `analyzing-test-space-with-mfq` |
 | 风险与模型 | `analyzing-product-risks`, `modeling-tests-with-ppdcs` |
 | 测试设计 | `designing-test-experiments`, `writing-unit-tests`, `challenging-test-designs` |

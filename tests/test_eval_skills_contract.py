@@ -80,8 +80,9 @@ class EvalSkillsContractTest(unittest.TestCase):
             self.assertIn(f"`{name}`", readme)
             self.assertIn(f"`{name}`", general_guide)
             self.assertIn(name, guide)
-        self.assertIn("22 个 Skill", readme)
-        self.assertIn("22 个 Skill", general_guide)
+        skill_count = len(list((ROOT / "skills").glob("*/SKILL.md")))
+        self.assertIn(f"{skill_count} 个 Skill", readme)
+        self.assertIn(f"{skill_count} 个 Skill", general_guide)
 
 
 if __name__ == "__main__":
