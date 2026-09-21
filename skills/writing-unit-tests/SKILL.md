@@ -1,6 +1,6 @@
 ---
 name: writing-unit-tests
-description: 用于已有需求、TCO、测试条件、缺陷或代码需要转化为单元测试，或 TDD 的 RED 行为、seam、oracle、失败原因或反馈效率不清时。
+description: 用于已有需求、TCO、测试条件、缺陷或代码需要转化为单元测试，或单元层 TDD 的 RED 行为、seam、oracle、失败原因或反馈效率不清时。
 ---
 
 # 编写单元测试
@@ -46,6 +46,8 @@ description: 用于已有需求、TCO、测试条件、缺陷或代码需要转�
 **完成条件：** 首个切片能击中一个具体规则、迁移、边界或缺陷，而非代码行。
 
 ## 4. 写清测试
+
+保留所选 seam 上的真实符号、输入输出类型、异常、fixture、替身和运行命令；只隐藏 seam 以下、不会改变可观察行为的实现细节。
 
 - 名称直接写“场景 → 可观察结果”。
 - Arrange／Act／Assert 或 Given／When／Then 一眼可分；通常只有一个 Act。
