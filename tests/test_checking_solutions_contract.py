@@ -45,6 +45,18 @@ class CheckingSolutionsContractTest(unittest.TestCase):
         self.assertNotIn("或用户要求实施前、实施后、归档前质检时", core)
         self.assertIn("测试先行或回归保护符合项目要求", sdd)
 
+    def test_completion_boundary_preserves_pending_behavior_and_authorized_slices(self):
+        core = (ROOT / "skills/checking-solutions/SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        # Text contract only; natural-entry behaviour is evaluated separately.
+        self.assertIn("## 完成边界", core)
+        boundary = core.split("## 完成边界", 1)[1].split("\n## ", 1)[0]
+        for term in ("原任务", "未完成", "子项", "歧义", "获准", "实际执行路径", "断言"):
+            self.assertIn(term, boundary)
+        self.assertIn("只检查本阶段承诺，不强迫一次补齐后续能力", boundary)
+        self.assertIn("仅限制缺口所影响的完成声明", boundary)
+
 
 if __name__ == "__main__":
     unittest.main()
