@@ -103,6 +103,10 @@ npx skills update
 
 仓库遵循 [Agent Skills specification](https://agentskills.io/specification)，并使用 `npx skills` 的标准多 Skill 目录结构。不同客户端对 Skill 路由和工具调用的执行能力可能不同；格式兼容不等于行为完全一致。
 
+## 仓库开发与变更跟踪
+
+本仓库使用 OpenSpec 维护当前规格、活动变更与历史归档，见[项目背景与变更流程](openspec/project.md)。这不要求 Skill 使用方采用 OpenSpec。测试脚本、输入和夹具正常跟踪；运行输出与审计过程按 `.gitignore` 留在本地。
+
 ## License
 
 [MIT](LICENSE)

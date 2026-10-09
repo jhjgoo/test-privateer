@@ -1,0 +1,39 @@
+# Spec Delta
+
+## Purpose
+
+规定 Test Privateer 仓库如何以 OpenSpec 管理当前契约、活动变更和历史迁移，以及如何区分可复用验证源码与本地过程记录。该流程只约束本仓库维护，不改变分发的 Skill 行为或强制使用方项目采用同一框架。
+
+## ADDED Requirements
+
+### Requirement: Maintain one change chain for repository behavior
+
+本仓库行为或流程变更 SHALL 在同一 OpenSpec change 中追溯意图、可观察要求、设计、任务与实际完成范围；完成后同步当前规格并归档。普通错字或失效链接修正可不新建 change。
+
+#### Scenario: Resume implementation with failed evidence
+- **WHEN** 继续已有变更时出现失败反证或未实现的原承诺
+- **THEN** 更新原 change 的决定与剩余任务，不新建平行账本，不以缩小声明关闭原承诺
+
+#### Scenario: Completed change ready to archive
+- **WHEN** 已完成授权范围并核对相应验证与限制
+- **THEN** 记录简短验收结论，经严格校验将 delta 同步到当前规格后归档，不将原始运行日志作为 change 附件
+
+### Requirement: Label retrospective migration honestly
+
+历史回填 SHALL 记录迁移日期、来源提交和范围，仅登记已合并契约；未交付方案和未重跑的行为评测保持明确边界。
+
+#### Scenario: Import pre-OpenSpec development
+- **WHEN** 将采用 OpenSpec 之前的已合并能力补录为 archive
+- **THEN** 按能力归组并标明回填，不伪造原开发时的 OpenSpec 审批、任务执行和验收记录
+
+### Requirement: Ignore local records without hiding reusable assets
+
+Git 规则 SHALL 排除本地评测输出、日志、审计及旧计划，保留 Skill、测试源码、可复用输入与夹具、判据、用户文档和 OpenSpec；对已跟踪纯记录仅停止跟踪，保留本地内容及 Git 历史。
+
+#### Scenario: Generated output versus fixture evidence
+- **WHEN** 同时存在评测 runs 中的输出及 fixture/evidence 中的固定输入
+- **THEN** 前者被忽略，后者仍可跟踪；图像夹具和其校验清单也不因扩展名被隐藏
+
+#### Scenario: Previously tracked audit document
+- **WHEN** 某纯审计记录已被 Git 跟踪
+- **THEN** 将其移出索引并验证本地内容未变；被生产 Skill 引用的长期资料继续跟踪，受影响的共享链接同步整理

@@ -29,3 +29,17 @@ __pycache__/
 coverage/
 dist/
 build/
+
+# Local validation records, not reusable test sources or OpenSpec changes
+/.local/
+/.scratch/
+/.superpowers/
+.pytest_cache/
+/docs/superpowers/
+/docs/research/*
+!/docs/research/2026-09-15-sdd-frameworks-and-spec-gate.md
+/evals/*/runs/
+/evals/history-regression/crossfile/runs/
+/evals/history-regression/DECISION.md
+/evals/history-regression/SHA256SUMS
+/evals/report-language/export-check.xmind

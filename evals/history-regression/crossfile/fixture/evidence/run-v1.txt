@@ -1,0 +1,7 @@
+version=v1
+case=C-001
+created_config=A
+queued_update=B
+observed_first_execution=A
+oracle_at_run=created_config
+result_at_run=PASS
