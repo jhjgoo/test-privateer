@@ -58,10 +58,10 @@ class TestSurfaceContractTest(unittest.TestCase):
             self.assertIn(term, cases)
 
     def test_api_design_keeps_public_contract_not_private_implementation(self):
-        text = (ROOT / "skills/designing-test-automation/SKILL.md").read_text(
+        text = (ROOT / "skills/writing-api-tests/SKILL.md").read_text(
             encoding="utf-8"
         )
-        boundary = section(text, "## 接口与页面入口的能力边界")
+        boundary = section(text, "## 2. 固定请求与判定依据")
 
         self.assertIn("公开接口契约中的状态码与请求／响应字段", boundary)
         self.assertIn(

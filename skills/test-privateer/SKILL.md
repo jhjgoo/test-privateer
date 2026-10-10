@@ -101,8 +101,9 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | 异常、回归或原因需要调查 | `investigating-findings` |
 | 需要回归保护 | `selecting-regression-tests` |
 | 需要持续自动反馈 | `designing-test-automation` |
-| 需要接口自动化 | `designing-test-automation` 的接口设计入口；框架接入待实现 |
-| 需要页面自动化 | `designing-test-automation` 的页面设计入口；框架接入待实现 |
+| 需要接口自动化 | `writing-api-tests`：按请求设计、编写或验证 |
+| 需要跨页面／服务的 E2E 旅程 | `writing-e2e-tests`：沿用既有框架，按需接入官方 e2e Skill |
+| 需要组件检查、集成方法或自动化组合取舍 | `designing-test-automation` |
 | 汇总已有执行证据形成测试报告，或需要判断证据强度 | `assessing-test-confidence` |
 
 用户直接点名 SFDIPOT、MFQ、产品风险或 PPDCS 时，分别使用 `scanning-product-with-sfdipot`、`analyzing-test-space-with-mfq`、`analyzing-product-risks` 或 `modeling-tests-with-ppdcs`。只补足该方法所需上下文，交付其约定产物后停止。

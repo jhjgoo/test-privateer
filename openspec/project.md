@@ -2,9 +2,11 @@
 
 ## 项目与边界
 
-本仓库发布黑帆测试官的 23 个 Agent Skills：主入口 `test-privateer` 按任务路由到测试分析、设计、执行、调查、回归和信心评估，以及方案、Prompt／Agent、UI/UX 质检。运行时内容在 `skills/`，用户教程在 `docs/`，可运行检查在 `tests/`，可复用行为评测材料在 `evals/`。
+本仓库发布黑帆测试官的 25 个 Agent Skills：主入口 `test-privateer` 按任务路由到测试分析、设计、执行、调查、回归和信心评估，以及方案、Prompt／Agent、UI/UX 质检。运行时内容在 `skills/`，用户教程在 `docs/`，可运行检查在 `tests/`，可复用行为评测材料在 `evals/`。
 
-产品契约见 [当前规格](specs/)，具体方法和模板仍以对应 Skill 为维护位置。规格约束可观察行为，不复制全部提示词，也不宣称模型每次都能遵循。接口／页面自动化目前提供设计入口，未提供框架接入与脚本实现；单元测试可编写并验证。
+产品契约见 [当前规格](specs/)，具体方法和模板仍以对应 Skill 为维护位置。规格约束可观察行为，不复制全部提示词，也不宣称模型每次都能遵循。
+
+自动化方法与编写职责已分开：`designing-test-automation` 选择方法，`writing-api-tests` 与 `writing-e2e-tests` 承接具体编写与验证。复用既有工具；纯接口不强制浏览器；合适的无框架 Web 项目按需取得官方 e2e Skill。单元测试仍由 `writing-unit-tests` 编写并验证。行为契约见 [自动化规格](specs/test-automation/spec.md)，变更与验收边界见 [归档记录](changes/archive/2026-10-10-strengthen-test-automation/)，可复跑材料见 [自动化评测](../evals/test-automation/README.md)。
 
 OpenSpec 从 2026-09-28 起管理**本仓库**的变更。它不改变安装方式，不为使用方项目创建 Spec 或审批流程。`ask-matt`、`skill-eval`、Superpowers 等是外部协作能力，不属于本仓库交付和验证范围。
 

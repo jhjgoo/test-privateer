@@ -6,7 +6,7 @@
 
 ## 安装
 
-这是一套由 23 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
+这是一套由 25 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
 
 ```bash
 # 交互式安装
@@ -51,7 +51,11 @@ npx skills add jhjgoo/test-privateer --list
 
 UI/UX 专项可直接评审设计稿、截图或已有操作与用户记录，也可提出最小补证动作。它提供方法与证据判断，按需使用宿主已有能力；不要求安装指定工具或引入测试框架。
 
-接口／页面自动化目前提供测试设计入口，均通过 `designing-test-automation` 使用；框架接入、脚本编写暂未实现。单元测试可使用 `writing-unit-tests` 编写并验证；已有测试可在授权范围内执行。
+`designing-test-automation` 负责选择自动化方法与测试边界。明确要写接口测试时，直接使用 `writing-api-tests`；要写端到端旅程时，直接使用 `writing-e2e-tests`。两者都覆盖准备、编写、运行、失败判断与交接。
+
+已有框架优先复用；没有框架的合适 Web 项目，可按需接入官方 e2e Skill。纯接口任务不强制安装浏览器。组件与集成／契约测试按需读取方法入口的对应参考。
+
+只请求设计时不执行。获准实施后，才在项目中配置工具、编写脚本并运行；单元测试仍交给 `writing-unit-tests`。官方 e2e Skill 按项目取得，不随本包内置。实测范围与复跑方法见[自动化评测](evals/test-automation/README.md)，不承诺覆盖所有框架或移动端。
 
 Skill 按当前任务与信息缺口协作，不按职业或资历分流。测试设计、执行准备和实际结果分别说明；具体用例写好不代表目标版本与环境已就绪。
 
@@ -88,7 +92,7 @@ Skill 按当前任务与信息缺口协作，不按职业或资历分流。测�
 | 测试设计 | `designing-test-experiments`, `writing-unit-tests`, `challenging-test-designs` |
 | 交付格式 | `exporting-test-cases-to-xmind` |
 | 执行与发现 | `running-test-sessions`, `investigating-findings` |
-| 回归与自动化 | `selecting-regression-tests`, `designing-test-automation` |
+| 回归与自动化 | `selecting-regression-tests`, `designing-test-automation`, `writing-api-tests`, `writing-e2e-tests` |
 | 证据与信心 | `assessing-test-confidence` |
 
 ## 更新
