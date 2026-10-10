@@ -14,6 +14,20 @@ def section(text: str, heading: str) -> str:
 
 
 class TestSurfaceContractTest(unittest.TestCase):
+    def test_entry_points_link_to_shared_expression_guidance(self):
+        for name, reference in (
+            ("clarifying-test-basis", "../test-privateer/references/artifact-routing.md"),
+            ("test-privateer", "references/artifact-routing.md"),
+        ):
+            with self.subTest(skill=name):
+                skill = ROOT / "skills" / name / "SKILL.md"
+                self.assertIn(
+                    f"]({reference}#面向读者的测试表达)",
+                    skill.read_text(encoding="utf-8"),
+                )
+                shared = skill.parent / reference
+                self.assertIn("## 面向读者的测试表达", shared.read_text(encoding="utf-8"))
+
     def test_router_separates_test_level_from_tdd_and_completes_mixed_requests(self):
         text = (ROOT / "skills/test-privateer/SKILL.md").read_text(encoding="utf-8")
         routing = section(text, "## 路由当前缺口")
@@ -31,7 +45,7 @@ class TestSurfaceContractTest(unittest.TestCase):
         text = (
             ROOT / "skills/designing-test-experiments/SKILL.md"
         ).read_text(encoding="utf-8")
-        cases = section(text, "## 表格优先交付 Case")
+        cases = section(text, "## 组织用例交付")
 
         for term in (
             "测试表面是执行者在当前层级能直接准备、操作和观察的边界",
