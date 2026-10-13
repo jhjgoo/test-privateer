@@ -99,6 +99,7 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | 测试资产需要挑战 | `challenging-test-designs` |
 | 已有可执行测试，且用户明确要求执行 | `running-test-sessions` |
 | 异常、回归或原因需要调查 | `investigating-findings` |
+| 用户要求维护错题本、整理返工教训或提炼项目规则 | `maintaining-project-lessons` |
 | 需要回归保护 | `selecting-regression-tests` |
 | 需要持续自动反馈 | `designing-test-automation` |
 | 需要接口自动化 | `writing-api-tests`：按请求设计、编写或验证 |
@@ -109,6 +110,8 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 用户直接点名 SFDIPOT、MFQ、产品风险或 PPDCS 时，分别使用 `scanning-product-with-sfdipot`、`analyzing-test-space-with-mfq`、`analyzing-product-risks` 或 `modeling-tests-with-ppdcs`。只补足该方法所需上下文，交付其约定产物后停止。
 
 直接评审界面与使用体验时，沿用当前任务、人群、材料、阶段及编号进入 `reviewing-ui-ux`；从其他阶段进入时，专项交回判断、证据缺口与下一动作，由调用方继续原阶段。是否调用取决于体验判断缺口；纯接口校验或页面自动化设计沿用各自入口。
+
+用户要求将失败、返工或审查记录整理为教训，或从错题本提炼项目规则时，进入 `maintaining-project-lessons`。沿用已有证据和权威位置，不重走项目建图；单次调查或方案质检不自动创建错题本，原因未明也不能因规则写好而称已修复。
 
 ## 跨入执行
 

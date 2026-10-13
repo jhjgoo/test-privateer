@@ -6,7 +6,7 @@
 
 ## 安装
 
-这是一套由 25 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
+这是一套由 26 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
 
 ```bash
 # 交互式安装
@@ -44,6 +44,7 @@ npx skills add jhjgoo/test-privateer --list
 - `modeling-tests-with-ppdcs`
 - `writing-unit-tests`
 - `investigating-findings`：调查异常、性能回归和可疑结果，区分观察、缺陷和原因
+- `maintaining-project-lessons`：维护错题本，归并返工证据、判断独立复发，将有边界且能检查的教训提炼为项目规则
 - `checking-solutions`：质检研发、修复和实施方案中的样例耦合、作用点错位与证据链断点；SDD 变更包额外检查规格、任务、实现和归档契约链
 - `prompt-eval`：审查 Prompt、Skill 和工具描述在目标模型与宿主下的行为质量
 - `agent-eval`：质检完整 Agent 的结果、合规、轨迹、稳定性和评估证据
@@ -94,6 +95,11 @@ Skill 按当前任务与信息缺口协作，不按职业或资历分流。测�
 | 执行与发现 | `running-test-sessions`, `investigating-findings` |
 | 回归与自动化 | `selecting-regression-tests`, `designing-test-automation`, `writing-api-tests`, `writing-e2e-tests` |
 | 证据与信心 | `assessing-test-confidence` |
+| 教训与项目规则 | `maintaining-project-lessons` |
+
+需要整理错误经验时，直接调用 [错题本维护 Skill](skills/maintaining-project-lessons/SKILL.md)。它复用项目既有错题本、规范与 Agent 入口，区分教训记录、规则晋升和问题修复；不自动建立定时审查，也不把参考项目的约定复制成你的规则。
+
+没有特殊约定时，错题本默认放在使用项目根目录 `LESSONS.md`，提炼的长期规则直接写入根目录 `AGENTS.md`。已有独立规范位置时继续沿用，入口保留读取指针。
 
 ## 更新
 

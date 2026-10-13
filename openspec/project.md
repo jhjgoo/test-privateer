@@ -2,7 +2,7 @@
 
 ## 项目与边界
 
-本仓库发布黑帆测试官的 25 个 Agent Skills：主入口 `test-privateer` 按任务路由到测试分析、设计、执行、调查、回归和信心评估，以及方案、Prompt／Agent、UI/UX 质检。运行时内容在 `skills/`，用户教程在 `docs/`，可运行检查在 `tests/`，可复用行为评测材料在 `evals/`。
+本仓库发布黑帆测试官的 26 个 Agent Skills：主入口 `test-privateer` 按任务路由到测试分析、设计、执行、调查、回归和信心评估，以及方案、Prompt／Agent、UI/UX 质检、错题本维护与项目规则提炼。运行时内容在 `skills/`，用户教程在 `docs/`，可运行检查在 `tests/`，可复用行为评测材料在 `evals/`。
 
 产品契约见 [当前规格](specs/)，具体方法和模板仍以对应 Skill 为维护位置。规格约束可观察行为，不复制全部提示词，也不宣称模型每次都能遵循。
 
@@ -27,6 +27,8 @@ OpenSpec 从 2026-09-28 起管理**本仓库**的变更。它不改变安装方�
 
 复用已有活动 change；有行为或流程变化时建立一个最小变更包。普通纠错不改变契约时直接修改即可。
 
+实施与验证完成后先交付结果，保留活动 change，状态为待用户确认。只有用户明确确认本次 change 已完成后，才同步当前 specs 并归档；不能将测试通过、任务勾选或 Agent 的交付总结视为用户确认。
+
 ```sh
 openspec list
 openspec new change <name>
@@ -34,7 +36,8 @@ openspec status --change <name>
 openspec instructions proposal --change <name>
 # 按需获取 specs、design、tasks 指令，填写并对齐原请求后实施
 openspec validate <name> --strict --no-interactive
-# 实际完成并核对验证、剩余范围后，更新当前 specs 并归档
+# 核对实现、验证与剩余范围，交付结果；此处先等待用户确认本次 change 已完成
+# 取得明确确认后，才更新当前 specs 并归档
 openspec archive <name> --yes
 openspec validate --all --strict --no-interactive
 openspec validate --archived --strict --no-interactive
