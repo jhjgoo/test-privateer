@@ -2,11 +2,11 @@
 
 一套面向测试全生命周期的黑帆测试官 Skill。它以产品价值确定方向，以产品风险选择重点，以测试证据驱动下一轮学习。
 
-`test-privateer` 是主入口；其余 Skill 提供澄清、测试空间扫描、风险分析、测试建模、测试设计、执行、回归、自动化与信心评估能力。
+`test-privateer` 是主入口；其余 Skill 提供任务升级、澄清、测试空间扫描、风险分析、测试建模、测试设计、执行、回归、自动化与信心评估能力。
 
 ## 安装
 
-这是一套由 26 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
+这是一套由 27 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
 
 ```bash
 # 交互式安装
@@ -86,6 +86,7 @@ Skill 按当前任务与信息缺口协作，不按职业或资历分流。测�
 | 主入口 | `test-privateer` |
 | 使命与上下文 | `setting-test-mission`, `clarifying-test-basis` |
 | 项目与变化 | `mapping-project-test-space`, `analyzing-change-for-testing`, `checking-solutions` |
+| 任务升级 | `shaping-ai-tasks` |
 | Agent 与 Prompt 质检 | `prompt-eval`, `agent-eval` |
 | 界面与使用体验质检 | `reviewing-ui-ux` |
 | 测试空间 | `mapping-test-space`, `scanning-product-with-sfdipot`, `analyzing-test-space-with-mfq` |

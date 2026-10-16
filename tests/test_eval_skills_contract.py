@@ -33,6 +33,7 @@ def read_frontmatter(path: Path) -> dict[str, str]:
 class EvalSkillsContractTest(unittest.TestCase):
     def test_eval_skills_have_valid_entrypoints_and_references(self):
         expected = {
+            "shaping-ai-tasks": [],
             "prompt-eval": ["references/prompt-review-patterns.md"],
             "agent-eval": [
                 "references/agent-quality-model.md",
@@ -75,7 +76,7 @@ class EvalSkillsContractTest(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         general_guide = (ROOT / "docs/guide.md").read_text(encoding="utf-8")
         guide = (ROOT / "docs/developer-guide.md").read_text(encoding="utf-8")
-        for name in ("prompt-eval", "agent-eval"):
+        for name in ("shaping-ai-tasks", "prompt-eval", "agent-eval"):
             self.assertIn(f"`{name}`", main)
             self.assertIn(f"`{name}`", readme)
             self.assertIn(f"`{name}`", general_guide)
@@ -83,6 +84,38 @@ class EvalSkillsContractTest(unittest.TestCase):
         skill_count = len(list((ROOT / "skills").glob("*/SKILL.md")))
         self.assertIn(f"{skill_count} 个 Skill", readme)
         self.assertIn(f"{skill_count} 个 Skill", general_guide)
+
+    def test_shaping_ai_tasks_preserves_route_boundaries(self):
+        text = (ROOT / "skills/shaping-ai-tasks/SKILL.md").read_text(encoding="utf-8")
+        for term in (
+            "高度",
+            "深度",
+            "范围",
+            "验证",
+            "clarifying-test-basis",
+            "setting-test-mission",
+            "外部验证",
+            "任务契约",
+        ):
+            self.assertIn(term, text)
+        self.assertIn("已经足够明确时直接放行", text)
+        self.assertIn("不把推荐、方案草案或任务契约说成已经执行或验证", text)
+
+    def test_shaping_ai_tasks_eval_covers_upgrade_and_passthrough_cases(self):
+        eval_root = ROOT / "evals/shaping-ai-tasks"
+        self.assertTrue((eval_root / "README.md").is_file())
+        inputs = {path.name for path in (eval_root / "inputs").glob("*.md")}
+        self.assertEqual(
+            inputs,
+            {
+                "authorization.md",
+                "cross-disciplinary.md",
+                "explicit-api.md",
+                "oracle-gap.md",
+                "raw-material.md",
+                "vague-test.md",
+            },
+        )
 
 
 if __name__ == "__main__":
