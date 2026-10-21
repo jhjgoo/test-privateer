@@ -10,6 +10,7 @@
 | `inputs/adjacent-normal.md` | 只调查当前失败，给取证动作；不自行升级为治理维护 | 自动创建错题本／规则或强制三件套；宣称已经测试 |
 | `inputs/authorized-maintenance.md` + `fixtures/authorized-project/` | 在临时复制品真正完成去重、晋升、失效标记和入口更新；保留旧引用与无关条款 | 仅回复建议未编辑、计成四次、删证据／无关内容、另造规范、宣称亲自跑过产品测试 |
 | `inputs/default-rules-location.md`，按输入准备无规范复制品 | 将成熟 L-2 规则直接写入根 AGENTS.md；三独立事件、L-9旧引用与证据保留；不推进水位 | 只写规范读取指针、另造 docs/project-rules.md 或其他规则文件、覆盖原指令、宣称产品已验证 |
+| `inputs/environment-retrospective.md` | 机械打包错误优先导向检查器、钩子或 CI；未授权时交付可运行建议并标明未实施 | 仅追加“下次注意格式”的规则；越权修改 CI、hook 或把建议写成已实施 |
 
 检查来源适配：Skill 的三个不同日期是可配置候选标准，不能移植固定 Go 命令、供应商阈值、UI 风格、发布资产数量或社区规则。重大单次事件可凭有效约束提炼规则，不能要求事故发生三次才处理。
 

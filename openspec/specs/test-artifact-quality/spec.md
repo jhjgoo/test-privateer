@@ -28,15 +28,28 @@
 - **THEN** 明示准备或规则缺口，不将其标为可执行、已执行或通过
 
 ### Requirement: Lead reports with a bounded conclusion and preserve source meaning
-报告 SHALL 先交代当前结论及版本范围、关键未决影响和下一行动，再展开证据；观察明细保留已知原值、类型与所属对象的对应关系，不补造业务译名或路径。
+
+报告 SHALL 先交代当前结论及版本范围、关键未决影响和下一行动，再展开证据；观察明细保留已知原值、类型与所属对象的对应关系，不补造业务译名或路径。完整测试信心报告 SHALL 在结论后提供最小证据摘要，包含测试目标、能表达实际变化的最小示意或对照、前基线、后结果、证据限制和风险判断；最小示意 SHALL 只在比文字更清楚时使用，且不得替代证据明细。
 
 #### Scenario: Correct rejection and unknown null semantics
+
 - **WHEN** 业务拒绝符合已确认规则，而另一结果的空值语义尚未知
 - **THEN** 前者可判测试符合预期，后者保留观察与待判定；缺失、null、空字符串、false 与空列表不因排版而合并
 
 #### Scenario: Summary of another person's test records
+
 - **WHEN** 只汇总已有记录，没有实际执行本轮产品测试
 - **THEN** 标明来源和核验边界，未执行与未覆盖保持可见，不把汇总工作称为新执行证据
+
+#### Scenario: Reader needs a quick risk decision
+
+- **WHEN** 报告读者需要决定继续、停止、补证或升级处理
+- **THEN** 报告 SHALL 用最小摘要呈现目标、前后结果、证据限制和风险，并链接或定位对应明细；不得只给通过率或冗长流水账
+
+#### Scenario: No visual is clearer than prose
+
+- **WHEN** 前后结果可以用一句话或小型表格清楚表达
+- **THEN** 报告 SHALL 不强制生成图或 Mermaid，不为了模板增加重复视觉
 
 ### Requirement: Export one authoritative set of cases
 XMind 导出 SHALL 复用已定稿用例的编号、内容和来源，脑图作为导出视图，不成为另一套独立维护的用例定义。
@@ -141,3 +154,20 @@ Agent SHALL 按读者需要完成的理解、决策、执行或验收任务应�
 - **WHEN** 来源缺少验证命令、前置依赖、判据或失败处理依据
 - **THEN** 标出实际缺口及其影响，不编造项目事实
 - **AND** 区分已确认安排与待确认建议，不把文案改写声称为执行或验收完成
+
+### Requirement: Maintain one testing vocabulary layer
+测试领域语言 SHALL 在共享参考中维护唯一权威定义；专项 Skill SHALL 沿用这些术语并只保留各自使用规则、方法和例外。核心术语至少 SHALL 区分测试项、测试条件、测试用例、探索章程、探查、判定依据、测试发现、缺陷和原因判断。`SFDIPOT`、`MFQ`、`PPDCS`、`TCO` 等缩写 SHALL 保留原名，首次面向用户出现时按需提供中文含义和方法入口指针。
+
+同一对象 SHALL 使用同一稳定名称；同义词变化 SHALL 归并到权威术语或说明其语义差异。领域语言层 SHALL 保持轻量，不复制完整方法理论，不把短答复变成术语表。
+
+#### Scenario: Method abbreviation appears
+- **WHEN** 产物中首次出现 SFDIPOT、MFQ、PPDCS 或 TCO
+- **THEN** 保留原名并按需给出一句中文含义、适用对象和方法 Skill 指针；详细方法不在共享术语层重复展开
+
+#### Scenario: Synonym drift appears
+- **WHEN** 同一产物把测试点、测试项和测试条件混用而未说明差异
+- **THEN** 归并到权威术语或按编号和定义区分对象成熟度；不因换词造成重复编号或状态漂移
+
+#### Scenario: Short answer already clear
+- **WHEN** 一次短答复无需引入新术语
+- **THEN** 不强制解释术语表；仅在术语影响理解或判定时就近解释

@@ -30,7 +30,7 @@ class TestSurfaceContractTest(unittest.TestCase):
 
     def test_router_separates_test_level_from_tdd_and_completes_mixed_requests(self):
         text = (ROOT / "skills/test-privateer/SKILL.md").read_text(encoding="utf-8")
-        routing = section(text, "## 路由当前缺口")
+        routing = section(text, "## 路由地图")
 
         self.assertIn(
             "测试层级由要取得的证据和观察位置决定；TDD 是实现新行为的反馈节奏，不是测试层级。",

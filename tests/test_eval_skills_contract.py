@@ -109,6 +109,8 @@ class EvalSkillsContractTest(unittest.TestCase):
             inputs,
             {
                 "authorization.md",
+                "environment-retrospective.md",
+                "fact-vs-decision.md",
                 "cross-disciplinary.md",
                 "explicit-api.md",
                 "oracle-gap.md",
