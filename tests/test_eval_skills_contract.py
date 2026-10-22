@@ -185,13 +185,85 @@ class ExitAndHarnessContractTest(unittest.TestCase):
         ):
             self.assertIn(term, text)
         self.assertIn("需要生成可持续驱动真实产品的验证器／验证资产 | `designing-test-automation`", router)
+        self.assertIn("已有项目验证器需要维护、复核或诊断分类 | `designing-test-automation`", router)
 
         eval_root = ROOT / "evals/test-automation/verification-harness"
         self.assertTrue((eval_root / "README.md").is_file())
         self.assertEqual(
             {path.name for path in (eval_root / "inputs").glob("*.md")},
-            {"existing-harness.md", "draft-only.md", "shared-session.md"},
+            {
+                "existing-harness.md",
+                "draft-only.md",
+                "shared-session.md",
+                "maintenance-missing-target.md",
+                "maintenance-product-defect.md",
+            },
         )
+
+    def test_p2_audit_and_advanced_verification_contracts(self):
+        running = (ROOT / "skills/running-test-sessions/SKILL.md").read_text(encoding="utf-8")
+        for term in (
+            "测试决策审计",
+            "追加写入，不重写历史行",
+            "证据指针",
+            "不能用“已观察”“明显异常”等叙述替代",
+            "恢复点引用决策日志的最新边界",
+            "不套审计表",
+        ):
+            self.assertIn(term, running)
+
+        lessons = (ROOT / "skills/maintaining-project-lessons/SKILL.md").read_text(encoding="utf-8")
+        for term in (
+            "五个条件",
+            "独立复发证据",
+            "误报范围和运行成本可接受",
+            "权威目标位置与负责人",
+            "接入既有测试、脚本、CI 或入口检查体系",
+            "无人运行的孤立资产",
+        ):
+            self.assertIn(term, lessons)
+
+        automation = (ROOT / "skills/designing-test-automation/SKILL.md").read_text(encoding="utf-8")
+        for term in (
+            "维护既有项目产品验证器",
+            "结果为 `blocked`",
+            "不改被测产品代码",
+            "只读 doctor",
+            "`clean`",
+            "`changed`",
+            "`blocked`",
+            "文档漂移",
+            "验证器缺口",
+            "产品缺陷",
+            "模型检查",
+            "状态机遍历",
+            "属性测试",
+            "参考模型",
+            "证明检查能够失败",
+            "通过只证明当前模型和边界",
+        ):
+            self.assertIn(term, automation)
+
+    def test_p2_behavior_eval_assets_exist(self):
+        expected = {
+            ROOT / "evals/running-test-sessions/README.md": {
+                "decision-supersession.md", "short-decision.md"
+            },
+            ROOT / "evals/project-lessons/inputs": {"structural-promotion.md"},
+            ROOT / "evals/test-automation/advanced-methods/inputs": {
+                "concurrency-model.md", "unsupported-model.md"
+            },
+            ROOT / "evals/test-automation/verification-harness/inputs": {
+                "maintenance-missing-target.md", "maintenance-product-defect.md"
+            },
+        }
+        for directory, filenames in expected.items():
+            if directory.suffix == ".md":
+                self.assertTrue(directory.is_file())
+                parent = directory.parent / "inputs"
+            else:
+                parent = directory
+            self.assertTrue(filenames.issubset({path.name for path in parent.glob("*.md")}))
 
 
 if __name__ == "__main__":
