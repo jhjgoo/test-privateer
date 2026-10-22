@@ -106,6 +106,7 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | 接口自动化设计、编写或验证 | `writing-api-tests` |
 | 跨页面／服务 E2E 旅程 | `writing-e2e-tests` |
 | 组件检查、集成方法或自动化组合取舍 | `designing-test-automation` |
+| 需要生成可持续驱动真实产品的验证器／验证资产 | `designing-test-automation` |
 | 变更需要回归保护 | `selecting-regression-tests` |
 | 汇总执行证据、判断证据强度 | `assessing-test-confidence` |
 | 广泛盘点产品内容或使用 SFDIPOT | `scanning-product-with-sfdipot` |
