@@ -112,6 +112,18 @@ class EvalSkillsContractTest(unittest.TestCase):
         ):
             self.assertIn(term, text)
 
+    def test_grice_communication_audit_is_explicit_and_not_a_single_score(self):
+        shaping = (ROOT / "skills/shaping-ai-tasks/SKILL.md").read_text(encoding="utf-8")
+        prompt = (ROOT / "skills/prompt-eval/SKILL.md").read_text(encoding="utf-8")
+        agent = (ROOT / "skills/agent-eval/SKILL.md").read_text(encoding="utf-8")
+        for text in (shaping, prompt, agent):
+            for term in ("数量", "质量", "关系", "方式"):
+                self.assertIn(term, text)
+        self.assertIn("不合并成单一分数", shaping)
+        self.assertIn("四维失败标签", prompt)
+        self.assertIn("实际工具轨迹", agent)
+        self.assertIn("提示注入", agent)
+
     def test_agent_eval_owns_blind_run_and_trace_protocol(self):
         text = (ROOT / "skills/agent-eval/SKILL.md").read_text(encoding="utf-8")
         for term in (
@@ -130,7 +142,14 @@ class EvalSkillsContractTest(unittest.TestCase):
         self.assertTrue((eval_root / "README.md").is_file())
         self.assertEqual(
             {path.name for path in (eval_root / "inputs").glob("*.md")},
-            {"leaky-comparison.md", "self-report-only.md", "environment-noise.md", "trajectory-conflict.md"},
+            {
+                "leaky-comparison.md",
+                "self-report-only.md",
+                "environment-noise.md",
+                "trajectory-conflict.md",
+                "prompt-injection.md",
+                "tool-failure-claim.md",
+            },
         )
 
     def test_shaping_ai_tasks_eval_covers_upgrade_and_passthrough_cases(self):
@@ -148,6 +167,8 @@ class EvalSkillsContractTest(unittest.TestCase):
                 "oracle-gap.md",
                 "raw-material.md",
                 "vague-test.md",
+                "just-enough-context.md",
+                "irrelevant-background.md",
             },
         )
 
