@@ -132,6 +132,29 @@ if p.exists():
             "项目评测资产放在本目录，具体实现遵循官方 DeepEval Skill。\n"
         ),
     },
+    "loop-governance-gap": {
+        "AGENTS.md": (
+            "# 测试规则\n"
+            "- 自动化测试只能使用本地测试环境。\n"
+            "- 不要修改产品源码。\n"
+        ),
+        "package.json": (
+            '{"scripts":{"test":"vitest run","check:api":'
+            '"node scripts/api-check.mjs","e2e":"playwright test"}}\n'
+        ),
+        "scripts/api-check.mjs": "// Existing API check entry.\n",
+        "e2e/smoke.spec.ts": "// Existing browser check entry.\n",
+    },
+    "loop-verifier-deferred": {
+        "AGENTS.md": (
+            "# 质量治理\n"
+            "- 测试责任角色：支付质量组。\n"
+            "- 缺陷平台：内部 Defect Hub 项目 payments。\n"
+            "- 风险接受人：产品负责人和支付值班经理共同确认。\n"
+        ),
+        "package.json": '{"scripts":{"test":"vitest run"}}\n',
+        "tests/unit/example.test.ts": "// Existing unit check.\n",
+    },
     "ordinary-no-profile": {
         "README.md": (
             "# Orders API\n"
@@ -161,6 +184,8 @@ if p.exists():
         "README.md": "# Payments\n测试入口尚待确认。\n",
     },
 }
+
+FIXTURES["loop-verifier-unconfirmed"] = FIXTURES["loop-verifier-deferred"]
 
 
 def prepare_fixture(name: str, target: Path) -> None:

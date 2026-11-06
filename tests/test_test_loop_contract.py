@@ -77,7 +77,6 @@ class TestLoopContractTest(unittest.TestCase):
         router = self.read("skills/test-privateer/SKILL.md")
         self.assertIn(".test-privateer/project.md", loop)
         self.assertIn("testing/runs/<run-id>/run.md", loop)
-        self.assertIn("缺少配置不阻塞", loop)
         self.assertIn("项目配置不是授权", loop)
         self.assertIn("新的 Run ID", loop)
         self.assertIn("已完成或已取消", loop)
@@ -99,6 +98,8 @@ class TestLoopContractTest(unittest.TestCase):
             "pause-resume.md",
             "product-defect-readonly.md",
             "single-stage-bypass.md",
+            "setup-readiness-gate.md",
+            "resume-without-profile.md",
             "missing-stage-artifact.md",
             "targeted-rework.md",
             "development-context-blind.md",
@@ -121,6 +122,7 @@ class TestLoopContractTest(unittest.TestCase):
             "人工检查点",
             "暂停恢复",
             "产品代码只读",
+            "Setup 就绪门禁",
             "阶段产物门禁",
             "最近责任阶段返工",
         ):
@@ -166,6 +168,31 @@ class TestLoopContractTest(unittest.TestCase):
             "普通单层请求",
         ):
             self.assertIn(term, text)
+
+    def test_full_loop_gates_on_project_readiness(self):
+        text = self.read("skills/running-test-loop/SKILL.md")
+        router = self.read("skills/test-privateer/SKILL.md")
+        for term in (
+            "项目就绪预检",
+            "`not_configured`",
+            "`awaiting_user_confirmation`",
+            "`blocked`",
+            "`ready`",
+            "先进入 `setup-test-privateer`",
+            "每轮向用户只提出一个",
+            "不创建 Run",
+            "不调度盲测子代理",
+            "没有验证器时不得声称完整 Loop 可执行",
+            "普通单层测试",
+        ):
+            self.assertIn(term, text)
+        self.assertIn("完整测试链", router)
+        self.assertIn("项目就绪预检", router)
+        self.assertIn("旧 Run 缺少项目配置时", text)
+        self.assertIn("不重复询问已确认的决定", text)
+        prompt = self.read("evals/test-loop/inputs/setup-readiness-gate.md")
+        self.assertNotIn("不要创建测试轮次", prompt)
+        self.assertNotIn("不要执行产品测试", prompt)
 
     def test_run_template_indexes_blind_waves_without_copying_payloads(self):
         text = self.read("skills/test-privateer/references/test-run-template.md")

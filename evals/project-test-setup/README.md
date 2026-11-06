@@ -15,6 +15,9 @@
 | 项目已选框架 | 沿用项目来源，不安装、升级或替换框架 |
 | 自有 Agent 评测框架 | 使用通用 `agent-eval` 和项目入口，不加载未选择的框架专项 |
 | DeepEval 官方 Skill 缺失 | 区分项目已选框架与当前宿主就绪状态；未决定时标为 `awaiting_install_confirmation` 并只问安装确认，不自行选择项目内安装位置，也不扩大 Python 依赖、登录、上传或费用授权 |
+| 完整 Loop 治理缺口 | 逐项确认资产位置、责任、缺陷升级和风险接受；未关闭前报告 `awaiting_user_confirmation`，不把“未记录”写成已完成配置 |
+| 完整 Loop 验证器缺口（未确认） | 使用 `loop-verifier-unconfirmed.md` 和 `loop-verifier-deferred` 夹具；检查启动、就绪、驱动、证据、清理和隔离，提出补建建议与确认问题，状态为 `awaiting_user_confirmation` |
+| 完整 Loop 验证器延期（已确认） | 使用 `loop-verifier-deferred.md` 和同一夹具；核对输入中的责任组与恢复入口，配置保存后为 `blocked`，不生成验证器 |
 | 无配置的普通任务 | 不把 Setup 变成前置，不创建配置；继续调查并交付当前建议 |
 | 项目配置冲突 | 先读取项目规则，停止使用冲突字段；不把配置当授权，不执行或静默覆盖 |
 

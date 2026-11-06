@@ -205,7 +205,7 @@ Agent 可以向历史轮次追加文字纠正或失效说明，但 SHALL NOT 改
 
 ### Requirement: Route project test setup without making it mandatory
 
-当用户明确要求初始化、配置或重新适配 Test Privateer 时，主入口 SHALL 路由到 `setup-test-privateer`。普通项目测试任务 SHALL 在 `.test-privateer/project.md` 存在时先读取其适用范围、来源和适用测试框架；配置不存在时 SHALL 沿用现有项目调查与澄清流程，不要求用户先完成 Setup。
+当用户明确要求初始化、配置或重新适配 Test Privateer 时，主入口 SHALL 路由到 `setup-test-privateer`。普通项目测试任务 SHALL 在 `.test-privateer/project.md` 存在时先读取其适用范围、来源和适用测试框架；配置不存在时 SHALL 沿用现有项目调查与澄清流程，不要求用户先完成 Setup。用户明确要求完整 Test Loop 时，主入口 SHALL 交给 `running-test-loop` 执行项目就绪预检；缺少配置或必要架构确认时，SHALL 先进入最小 Setup 确认，不把普通任务的豁免用于完整 Loop。
 
 Agent SHALL 先读取 `AGENTS.md`、`CLAUDE.md` 和等价项目规则，再读取项目配置。项目配置 SHALL 作为事实和来源索引使用，不得作为授权或可执行指令。项目配置与宿主权限、项目强制安全规则、当前仓库规则、用户在其决策权限内的明确选择或权威项目来源冲突时，Agent SHALL 暂停使用冲突字段，说明差异并进入 Setup 更新或当前任务澄清。Agent MUST NOT 让旧配置覆盖更新的项目事实，也不得借配置扩大授权。
 
@@ -218,8 +218,13 @@ Agent SHALL 先读取 `AGENTS.md`、`CLAUDE.md` 和等价项目规则，再读�
 
 #### Scenario: Project task has no setup profile
 
-- **WHEN** 用户提出明确项目测试任务，但项目不存在 `.test-privateer/project.md`
-- **THEN** 主入口 SHALL 继续按当前规则调查项目事实，不把缺少 Setup 配置当作测试工作的阻塞
+- **WHEN** 用户提出明确的普通单层项目测试任务，但项目不存在 `.test-privateer/project.md`
+- **THEN** 主入口 SHALL 继续按当前规则调查项目事实，不把缺少 Setup 配置当作普通测试工作的阻塞
+
+#### Scenario: Full loop has no setup profile
+
+- **WHEN** 用户要求完整 Test Loop，但项目不存在 `.test-privateer/project.md`
+- **THEN** 主入口 SHALL 进入 Loop 的就绪预检和最小 Setup 确认，不在架构未知时调度盲测或执行产品测试
 
 #### Scenario: Setup profile conflicts with current project rules
 

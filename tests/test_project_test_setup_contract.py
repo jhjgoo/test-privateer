@@ -68,6 +68,11 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             "不得同时把本轮顶层状态写成 `environment_error`",
             "安装位置和作用域由宿主安装能力与用户选择决定",
             "不得自行创建项目内 `skills/deepeval/`",
+            "判断是否配置完整 Test Loop",
+            "`inherited_from_source`",
+            "`pending_user_confirmation`",
+            "完整 Loop 就绪状态必须为 `blocked`",
+            "不生成验证器、TCO、测试资产、CI 或测试代码",
         ):
             self.assertIn(term, text)
 
@@ -88,6 +93,11 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             "证据位置、敏感性和保留策略",
             "缺陷平台与 Finding 升级边界",
             "验证器与健康检查入口",
+            "盲测子代理隔离输出",
+            "共享资源及串并行策略",
+            "完整 Test Loop 就绪",
+            "`awaiting_user_confirmation`",
+            "已确认后续补建项",
             "未决配置",
         ):
             self.assertIn(term, text)
@@ -481,6 +491,9 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 "selected-framework.md",
                 "custom-agent-framework.md",
                 "deepeval-readiness.md",
+                "loop-governance-gap.md",
+                "loop-verifier-unconfirmed.md",
+                "loop-verifier-deferred.md",
                 "ordinary-no-profile.md",
                 "profile-conflict.md",
             },
@@ -517,6 +530,17 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             builder.prepare_fixture("profile-conflict", target)
             self.assertTrue((target / "AGENTS.md").is_file())
             self.assertTrue((target / ".test-privateer/project.md").is_file())
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            builder.prepare_fixture("loop-governance-gap", target)
+            self.assertTrue((target / "e2e/smoke.spec.ts").is_file())
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            builder.prepare_fixture("loop-verifier-deferred", target)
+            self.assertIn(
+                "Defect Hub",
+                (target / "AGENTS.md").read_text(encoding="utf-8"),
+            )
 
 
 if __name__ == "__main__":
