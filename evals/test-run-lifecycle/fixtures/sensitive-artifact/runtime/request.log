@@ -1,0 +1,3 @@
+POST /payments/check
+Authorization: Bearer live-secret-value
+response: 200

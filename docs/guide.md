@@ -24,7 +24,7 @@
 
 ### 安装与首次使用
 
-这套工具包含 27 个 Skill，主入口会按需要调用其他组件。安装全集：
+这套工具包含 30 个 Skill，主入口会按需要调用其他组件。安装全集：
 
 ```bash
 npx skills add jhjgoo/test-privateer --skill '*'
@@ -314,7 +314,7 @@ PPDCS 提供五种选择，按行为选用即可：
 
 ## 7. 执行之后，怎样形成可信结论
 
-具备执行条件并已获授权后，使用 `running-test-sessions`。记录操作和实际观察，随后判断它们说明了什么。
+具备执行条件并已获授权后，单次执行使用 `running-test-sessions`；如果用户要求从分析、设计一路推进到执行和报告，使用 `running-test-loop` 编排多个阶段。记录操作和实际观察，随后判断它们说明了什么。
 
 下面是假设执行 C-002 后得到的教学记录：
 
@@ -464,6 +464,7 @@ PPDCS 提供五种选择，按行为选用即可：
 | 当前工作 | Skill | 主要结果 |
 | --- | --- | --- |
 | 找到合适起点 | `test-privateer` | 当前任务和下一项活动 |
+| 初始化项目测试配置 | `setup-test-privateer` | 项目来源、入口、框架、安全与证据约定 |
 | 升级模糊任务 | `shaping-ai-tasks` | 最终目标、交付物、方法、验证和下一步 |
 | 明确目标与边界 | `setting-test-mission` | 测试使命、范围及约束 |
 | 澄清业务和系统依据 | `clarifying-test-basis` | 确认信息、未知及取证动作 |
@@ -471,6 +472,7 @@ PPDCS 提供五种选择，按行为选用即可：
 | 分析需求或代码变化 | `analyzing-change-for-testing` | 测试分析、风险及完整已识别范围 |
 | 审查 Prompt、Skill 或工具描述 | `prompt-eval` | 当前模型与宿主下的发现、最小修正和验证边界 |
 | 质检 Agent 或现有评估方案 | `agent-eval` | Agent 质量风险、评估证据和补测建议 |
+| 项目已经选择 DeepEval | `evaluating-agents-with-deepeval` | 调用官方 DeepEval Skills，并检查证据、Oracle、授权与失败边界 |
 | 评审界面与使用体验 | `reviewing-ui-ux` | 方法选择、有依据的体验发现、证据边界与下一探查 |
 | 选择扫描方法 | `mapping-test-space` | 有组织的候选测试空间 |
 | 广扫产品元素 | `scanning-product-with-sfdipot` | 元素、关系与未知 |
@@ -481,6 +483,7 @@ PPDCS 提供五种选择，按行为选用即可：
 | 编写单元测试 | `writing-unit-tests` | 测试代码、运行结果或有效 RED |
 | 评审测试设计 | `challenging-test-designs` | 有依据的审查发现 |
 | 执行已授权测试 | `running-test-sessions` | 原始观察、记录及证据 |
+| 连续推进完整测试链 | `running-test-loop` | 有界授权内的阶段交接、执行证据和信心报告 |
 | 调查可疑结果 | `investigating-findings` | 原因解释、缺陷证据或认知修正 |
 | 维护错题本、提炼项目规则 | `maintaining-project-lessons` | 有证据的教训、晋升依据、规则与入口更新 |
 | 选择回归检查 | `selecting-regression-tests` | 回归范围、依据与剩余风险 |

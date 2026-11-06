@@ -125,6 +125,8 @@ Workbuddy 用户可在已安装的“黑帆测试官”中使用下面的话术�
 
 `prompt-eval` 关注 Prompt 在当前模型、宿主和任务中的适配；`agent-eval` 关注完整系统。若 Agent 失败已定位到 Prompt，前者接收失败场景和直接证据继续纠偏；Prompt 修改后再回到系统级场景验证。
 
+项目配置、当前权威来源或用户明确指令已经选择 DeepEval 时，在 `agent-eval` 固定质量主张和原始证据后使用 `evaluating-agents-with-deepeval`。该 Skill 只施加质量门槛，数据集、tracing、指标、测试资产和运行流程交给 Confident AI 官方 `deepeval`、`deepeval-tracing` 与 `deepeval-otel` Skills。项目使用其他或自有框架时继续沿用原入口，不为加载专项 Skill 而迁移。
+
 需要完整操作步骤、联动案例、可复制提示词和评测证据解读时，阅读[《Prompt 与 Agent 评测实战教程》](prompt-agent-eval-guide.md)。
 
 ## 8. 改界面后：评审任务中的体验

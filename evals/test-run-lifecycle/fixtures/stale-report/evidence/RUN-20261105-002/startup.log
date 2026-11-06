@@ -1,0 +1,3 @@
+command: ./start-billing
+exit: 1
+stderr: database fixture unavailable

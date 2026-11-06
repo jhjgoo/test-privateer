@@ -1,0 +1,1 @@
+{"run_id":"RUN-20261105-004","case_id":"C-102","version":"inventory@0b7d113","environment":"local-ui","observed_stock":7,"expected_stock":9,"verdict":"failed","source":"ui branch","generated_at":"2026-11-05T08:01:00Z"}

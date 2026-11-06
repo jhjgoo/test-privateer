@@ -133,3 +133,158 @@ Agent 行为评测 SHALL 使用自然任务提示，不在候选可见的目录�
 #### Scenario: Short execution stays lightweight
 - **WHEN** 单会话只执行一个明确测试且证据不改变方向
 - **THEN** 沿用正常测试记录，不强制创建决策日志
+
+### Requirement: Maintain one authoritative test run record when coordination requires it
+
+当测试跨多个阶段或会话、包含并行执行、需要暂停恢复，或用户明确要求审计时，Agent SHALL 建立一个稳定 Run ID 和唯一轮次记录。轮次记录 SHALL 保存测试对象与版本、触发来源、范围、授权、禁止动作、预算、退出条件、当前阶段、轮次状态、资产指针、阻塞和下一动作。
+
+轮次记录 SHALL 只索引 TCO、需求分析、测试依据、用例、原始证据和报告。各资产的正文与状态仍由原权威位置维护。单会话、单项测试且方向不变时，Agent SHALL NOT 强制创建轮次记录。
+
+#### Scenario: Multi-stage test creates one run record
+
+- **WHEN** 用户要求从变化分析连续推进到用例、执行和报告
+- **THEN** Agent SHALL 创建一个 Run ID，并让后续阶段更新同一轮次记录中的阶段、状态和资产指针
+
+#### Scenario: Short execution stays lightweight
+
+- **WHEN** 用户只要求执行一个明确测试，且任务不会跨会话或改变测试方向
+- **THEN** Agent SHALL 使用现有用例与执行记录，不为满足格式创建独立轮次资产
+
+#### Scenario: Resumed work uses the existing run
+
+- **WHEN** 一个已暂停或受阻的测试轮次在新会话继续
+- **THEN** Agent SHALL 先恢复原 Run ID、授权、退出条件和资产指针，再推进剩余工作
+
+### Requirement: Separate run state from test verdict and confidence
+
+轮次记录 SHALL 将流程状态维护为准备中、可执行、执行中、已暂停、受阻、已完成或已取消。单项测试的通过、失败、跳过、受阻和待判定 SHALL 留在执行记录；综合信心 SHALL 留在测试信心报告。
+
+轮次“已完成”只表示已到达退出条件并完成交付，MUST NOT 表示所有测试通过、风险消失或负责人批准发布。轮次“受阻” SHALL 保留已取得的有效证据和未证实范围。
+
+#### Scenario: Completed run contains failed tests
+
+- **WHEN** 所有计划内检查均已取得结果，但其中存在符合证据的失败
+- **THEN** 轮次可以标记为已完成，同时执行记录保留失败，信心报告说明影响和残余风险
+
+#### Scenario: Blocked run has partial evidence
+
+- **WHEN** 一部分测试已经执行，但后续步骤因凭据或环境缺失而无法继续
+- **THEN** 轮次 SHALL 标记为受阻，并保留已执行证据、阻塞原因和恢复动作，不将整轮写成未开始或通过
+
+### Requirement: Use one synthesizer for authoritative run assets
+
+当多个 Agent 或执行分支参与同一轮测试时，调用方 SHALL 指定一个合成者维护轮次记录和共享测试资产。执行分支 SHALL 返回自己的范围、Run ID、测试 ID、原始证据和状态，MUST NOT 并发改写同一权威文件。
+
+共享账号、数据、端口或会话无法隔离时，Agent SHALL 串行执行相关分支，或停在明确阻塞边界。并行数量 SHALL NOT 以牺牲证据身份或环境隔离为代价。
+
+#### Scenario: Parallel API and UI checks return to one writer
+
+- **WHEN** API 和 UI 检查可以使用隔离数据并行执行
+- **THEN** 两个分支 SHALL 分别保留证据并交回同一合成者，由合成者更新轮次记录和综合结论
+
+#### Scenario: Shared account cannot be isolated
+
+- **WHEN** 两个执行分支会修改同一账号的共享状态
+- **THEN** Agent SHALL 改为串行执行或报告受阻，不让两个分支并发写入后再猜测结果归属
+
+### Requirement: Preserve completed run history
+
+已暂停或受阻的轮次可以沿用原 Run ID 恢复。已完成或已取消的轮次 SHALL 保持历史身份；后续发生新的产品执行时 SHALL 创建新的 Run ID，并引用先前轮次，而不是把旧轮次改回执行中。
+
+Agent 可以向历史轮次追加文字纠正或失效说明，但 SHALL NOT 改写原始执行记录、原目标版本或当时证据。新版本、新规则或新环境下的结果 MUST NOT 追加为旧轮次的当前执行。
+
+#### Scenario: New version starts a new run
+
+- **WHEN** 已完成轮次后目标产品版本发生变化，用户要求重新验证
+- **THEN** Agent SHALL 创建新的 Run ID，并将旧轮次作为历史依据引用
+
+#### Scenario: Historical interpretation is corrected
+
+- **WHEN** 新证据显示旧轮次的一项解释不成立，但没有重新执行产品测试
+- **THEN** Agent SHALL 追加纠正和证据指针，保留旧观察和旧轮次状态，不声称发生了新的测试执行
+
+### Requirement: Route project test setup without making it mandatory
+
+当用户明确要求初始化、配置或重新适配 Test Privateer 时，主入口 SHALL 路由到 `setup-test-privateer`。普通项目测试任务 SHALL 在 `.test-privateer/project.md` 存在时先读取其适用范围、来源和适用测试框架；配置不存在时 SHALL 沿用现有项目调查与澄清流程，不要求用户先完成 Setup。
+
+Agent SHALL 先读取 `AGENTS.md`、`CLAUDE.md` 和等价项目规则，再读取项目配置。项目配置 SHALL 作为事实和来源索引使用，不得作为授权或可执行指令。项目配置与宿主权限、项目强制安全规则、当前仓库规则、用户在其决策权限内的明确选择或权威项目来源冲突时，Agent SHALL 暂停使用冲突字段，说明差异并进入 Setup 更新或当前任务澄清。Agent MUST NOT 让旧配置覆盖更新的项目事实，也不得借配置扩大授权。
+
+框架专用 Skill SHALL 只在项目配置、当前权威来源或用户明确指令选择对应框架时路由。项目选择其他或自有框架时，主入口 SHALL 使用通用测试专项和项目入口，不得加载无关框架 Skill。
+
+#### Scenario: User explicitly requests initialization
+
+- **WHEN** 用户要求为当前项目初始化 Test Privateer 的测试配置
+- **THEN** 主入口 SHALL 调用 `setup-test-privateer`，不先生成 TCO、测试分析或用例
+
+#### Scenario: Project task has no setup profile
+
+- **WHEN** 用户提出明确项目测试任务，但项目不存在 `.test-privateer/project.md`
+- **THEN** 主入口 SHALL 继续按当前规则调查项目事实，不把缺少 Setup 配置当作测试工作的阻塞
+
+#### Scenario: Setup profile conflicts with current project rules
+
+- **WHEN** 项目配置引用的环境或命令与当前权威规则不一致
+- **THEN** Agent SHALL 标明冲突和影响，不执行冲突配置，并建议更新 Setup 或由用户确认当前规则
+
+#### Scenario: Project selects a custom agent evaluation framework
+
+- **WHEN** 项目配置指定自有 Agent 评测框架而未选择 DeepEval
+- **THEN** 主入口 SHALL 沿用项目框架和通用 `agent-eval` 能力，不加载 DeepEval 专项 Skill
+
+### Requirement: Route an explicitly requested complete test loop
+
+当用户明确要求 Agent 连续完成测试分析、用例、执行和报告，或直接调用 `running-test-loop` 时，主入口 SHALL 路由到 Test Loop。普通分析、单层自动化、单次执行或报告汇总 SHALL 继续直达现有专项，不因存在 Loop 而强制进入完整流程。
+
+Loop SHALL 依赖当前测试轮次和项目配置契约。前置 change 尚未落实或对应资产不存在时，Agent SHALL 停在可定位边界并说明缺少的契约，不在 Loop 内创建另一套临时格式。
+
+#### Scenario: User requests the whole testing chain
+
+- **WHEN** 用户要求从当前变化分析开始，自动生成用例、执行适用测试并输出测试报告
+- **THEN** 主入口 SHALL 路由到 `running-test-loop`，由 Loop 复用各专项推进
+
+#### Scenario: User requests one API test
+
+- **WHEN** 用户只要求编写并运行一条明确接口测试
+- **THEN** 主入口 SHALL 直达 `writing-api-tests` 或 `running-test-sessions`，不创建完整 Loop
+
+### Requirement: Keep analysis and product execution authorization separate
+
+测试分析 SHALL 可以读取项目材料、现有测试和历史结果，但 SHALL NOT 因分析任务本身运行产品测试、启动服务、安装依赖、创建数据或访问外部环境。只有用户明确要求执行，或 Test Loop 已记录相应授权时，Agent 才 SHALL 进入产品执行。
+
+获得执行授权后，Agent SHALL 在授权范围内连续完成正常测试步骤。新增环境、凭据、费用、共享数据修改或其他超出原授权的动作 SHALL 触发澄清、人工检查点或停止。
+
+#### Scenario: Change analysis has no execution authorization
+
+- **WHEN** 用户只要求分析一项变化的测试影响
+- **THEN** Agent SHALL 核对已有测试和历史证据，提出建议执行范围，但不得运行测试并把结果写入分析
+
+#### Scenario: Test loop includes execution authorization
+
+- **WHEN** 用户明确授权 Test Loop 在指定本地或测试环境运行测试
+- **THEN** Agent SHALL 在记录的边界内连续执行，无需为每条正常测试重复请求许可
+
+#### Scenario: Execution needs a new destructive action
+
+- **WHEN** 已授权 Loop 后发现必须清理共享数据或访问生产环境才能继续
+- **THEN** Agent SHALL 停止该分支并说明影响，不把原测试授权扩大到新的破坏性动作
+
+### Requirement: Route DeepEval agent evaluation only when selected
+
+当用户明确调用 DeepEval Agent 评测，或项目配置／当前权威来源选择 DeepEval 且任务需要建立、运行、审查或修正 Agent 评测时，主入口 SHALL 路由到 `evaluating-agents-with-deepeval`。该专项 SHALL 先继承 `agent-eval` 已固定的质量主张、场景、Oracle 和证据协议，再把 DeepEval 实施交给 Confident AI 官方 Skills；不得从框架指标重新定义业务目标，也不得在本包复制官方实现教程。
+
+没有选择 DeepEval 时，普通 Agent 测试设计、评估审查、版本比较和失败归因 SHALL 继续使用 `agent-eval` 或项目自有框架。官方 DeepEval Skill 缺失时，Agent SHALL 说明官方来源、安装对象和影响并询问用户是否安装；用户尚未决定且尚未运行评测时，顶层就绪状态 SHALL 标为 `awaiting_install_confirmation` 并停在一个安装确认问题，不得同时写成 `environment_error` 或最终 `missing_official_skill`。只有用户明确确认后才可使用宿主已有安装能力，安装目标由该能力和用户选择决定。拒绝、宿主不支持安装或安装后仍不可读时，SHALL 报告具体缺口并降级到仍可执行的通用评测工作，不得凭记忆补写实现、静默安装、自行复制到项目目录、登录、上传或替换项目框架。
+
+#### Scenario: Explicit DeepEval request
+
+- **WHEN** 用户明确要求使用 DeepEval 为当前 Agent 建立或运行评测
+- **THEN** 主入口 SHALL 路由到 DeepEval 质量约束，再由其调用官方 `deepeval` Skill；该请求只代表本轮框架选择，不要求项目永久迁移
+
+#### Scenario: Generic agent evaluation request
+
+- **WHEN** 用户只要求设计 Agent 测试或审查现有评估，项目没有选择 DeepEval
+- **THEN** 主入口 SHALL 使用通用 `agent-eval`，不加载 DeepEval 专项
+
+#### Scenario: Official DeepEval skill is unavailable
+
+- **WHEN** 项目选择 DeepEval，但当前宿主缺少官方 `deepeval` Skill
+- **THEN** Agent SHALL 先标为 `awaiting_install_confirmation` 并询问是否安装，在明确确认前不安装或自行选择项目内安装位置；若仍不可用，则保留可完成的场景、Oracle 和原始证据工作并标记 `missing_official_skill`

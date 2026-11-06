@@ -152,6 +152,84 @@ class EvalSkillsContractTest(unittest.TestCase):
             },
         )
 
+    def test_deepeval_specialist_delegates_implementation_to_official_skills(self):
+        skill_dir = ROOT / "skills/evaluating-agents-with-deepeval"
+        text = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
+        frontmatter = read_frontmatter(skill_dir / "SKILL.md")
+        self.assertEqual(
+            frontmatter.get("name"), "evaluating-agents-with-deepeval"
+        )
+        for name in ("`deepeval`", "`deepeval-tracing`", "`deepeval-otel`"):
+            self.assertIn(name, text)
+        for source in (
+            "https://github.com/confident-ai/deepeval/tree/main/skills/deepeval",
+            "https://github.com/confident-ai/deepeval/tree/main/skills/deepeval-tracing",
+            "https://github.com/confident-ai/deepeval/tree/main/skills/deepeval-otel",
+        ):
+            self.assertIn(source, text)
+        self.assertIn("官方 Skill 负责实现", text)
+        self.assertIn("Test Privateer 负责质量门槛", text)
+        self.assertIn("missing_official_skill", text)
+        self.assertIn("询问用户是否安装", text)
+        self.assertIn("只有用户明确确认后", text)
+        self.assertIn("Python 包存在不等于官方 Skill 已安装", text)
+        self.assertIn("安装后重新读取", text)
+        self.assertIn("不授权安装 Python 依赖", text)
+        self.assertIn("awaiting_install_confirmation", text)
+        self.assertIn("顶层就绪状态必须是", text)
+        self.assertIn("单纯等待安装选择不是一次评测结果", text)
+        self.assertIn("安装位置和作用域由宿主安装能力与用户选择决定", text)
+        self.assertIn("不得自行创建项目内 `skills/deepeval/`", text)
+        self.assertFalse((skill_dir / "references/deepeval-mapping.md").exists())
+        for implementation_detail in (
+            "ToolCorrectnessMetric",
+            "ArgumentCorrectnessMetric",
+            "TaskCompletionMetric",
+            "PlanQualityMetric",
+            "deepeval test run",
+        ):
+            self.assertNotIn(implementation_detail, text)
+        for term in (
+            "项目配置",
+            "用户明确指令",
+            "原始记录",
+            "确定性",
+            "未确认",
+            "不生成平均总分",
+            "environment_error",
+            "本地",
+            "上传",
+        ):
+            self.assertIn(term, text)
+
+        router = (ROOT / "skills/test-privateer/SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        agent = (ROOT / "skills/agent-eval/SKILL.md").read_text(encoding="utf-8")
+        for entrypoint in (router, agent):
+            self.assertIn("evaluating-agents-with-deepeval", entrypoint)
+            self.assertIn("DeepEval", entrypoint)
+            self.assertIn("自有框架", entrypoint)
+
+    def test_deepeval_behavior_material_covers_activation_and_failure_boundaries(self):
+        eval_root = ROOT / "evals/deepeval-agent-evaluation"
+        self.assertTrue((eval_root / "README.md").is_file())
+        self.assertEqual(
+            {path.name for path in (eval_root / "inputs").glob("*.md")},
+            {
+                "explicit-choice.md",
+                "custom-framework.md",
+                "result-conflict.md",
+                "install-choice-pending.md",
+                "missing-plan.md",
+                "private-records.md",
+                "missing-package.md",
+                "unavailable-reviewer.md",
+                "official-skill-missing.md",
+                "tracing-handoff.md",
+            },
+        )
+
     def test_shaping_ai_tasks_eval_covers_upgrade_and_passthrough_cases(self):
         eval_root = ROOT / "evals/shaping-ai-tasks"
         self.assertTrue((eval_root / "README.md").is_file())

@@ -16,6 +16,8 @@ description: 用于 Agent 测试设计、现有评估质检、版本比较或失
 
 沿用用户请求的分支和停止边界。已有平台或日志就读取其证据；没有时输出工具无关的测试设计。实际运行仍需对应授权和可用环境。
 
+项目配置、当前权威来源或用户明确指令选择 DeepEval 时，先固定本 Skill 的质量主张、场景、Oracle 和原始证据，再交给 `evaluating-agents-with-deepeval` 施加质量门槛，并由它调用 Confident AI 官方 `deepeval` Skills 完成框架实施。项目使用自有框架时沿用项目入口和本 Skill，不加载 DeepEval 专项；框架尚未决定且会改变测试资产时交给 `setup-test-privateer`。
+
 ## 1. 固定质量主张与系统版本
 
 说明本轮要支持的判断及证据使用者，例如能否完成退款、候选 Prompt 是否改善、当前评估是否可信。记录用户任务、目标版本、模型与推理设置、Prompt／Skill、工具 schema、权限、记忆、编排、环境、数据和预算。

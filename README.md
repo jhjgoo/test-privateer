@@ -6,7 +6,7 @@
 
 ## 安装
 
-这是一套由 27 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
+这是一套由 30 个 Skill 组成的完整工作流。`npx skills` 不会自动安装 Skill 依赖，因此必须安装全集。
 
 ```bash
 # 交互式安装
@@ -39,6 +39,8 @@ npx skills add jhjgoo/test-privateer --list
 
 也可以直接调用方法 Skill，例如：
 
+- `setup-test-privateer`：调查项目事实并建立可重复更新的测试配置入口
+- `running-test-loop`：在一个有界授权内连续推进分析、设计、执行、调查、回归和报告
 - `scanning-product-with-sfdipot`
 - `analyzing-test-space-with-mfq`
 - `modeling-tests-with-ppdcs`
@@ -48,6 +50,7 @@ npx skills add jhjgoo/test-privateer --list
 - `checking-solutions`：质检研发、修复和实施方案中的样例耦合、作用点错位与证据链断点；SDD 变更包额外检查规格、任务、实现和归档契约链
 - `prompt-eval`：审查 Prompt、Skill 和工具描述在目标模型与宿主下的行为质量
 - `agent-eval`：质检完整 Agent 的结果、合规、轨迹、稳定性和评估证据
+- `evaluating-agents-with-deepeval`：项目明确选择 DeepEval 时，调用 Confident AI 官方 Skills 实施，并检查证据、Oracle、授权和失败边界
 - `reviewing-ui-ux`：沿用户任务评审元素、样式、交互、无障碍和可用性，选择方法与判定依据，区分观察、风险和待验证行为
 
 UI/UX 专项可直接评审设计稿、截图或已有操作与用户记录，也可提出最小补证动作。它提供方法与证据判断，按需使用宿主已有能力；不要求安装指定工具或引入测试框架。
@@ -84,16 +87,18 @@ Skill 按当前任务与信息缺口协作，不按职业或资历分流。测�
 | 阶段 | Skill |
 | --- | --- |
 | 主入口 | `test-privateer` |
+| 项目配置 | `setup-test-privateer` |
 | 使命与上下文 | `setting-test-mission`, `clarifying-test-basis` |
 | 项目与变化 | `mapping-project-test-space`, `analyzing-change-for-testing`, `checking-solutions` |
 | 任务升级 | `shaping-ai-tasks` |
-| Agent 与 Prompt 质检 | `prompt-eval`, `agent-eval` |
+| Agent 与 Prompt 质检 | `prompt-eval`, `agent-eval`, `evaluating-agents-with-deepeval` |
 | 界面与使用体验质检 | `reviewing-ui-ux` |
 | 测试空间 | `mapping-test-space`, `scanning-product-with-sfdipot`, `analyzing-test-space-with-mfq` |
 | 风险与模型 | `analyzing-product-risks`, `modeling-tests-with-ppdcs` |
 | 测试设计 | `designing-test-experiments`, `writing-unit-tests`, `challenging-test-designs` |
 | 交付格式 | `exporting-test-cases-to-xmind` |
 | 执行与发现 | `running-test-sessions`, `investigating-findings` |
+| 测试闭环 | `running-test-loop` |
 | 回归与自动化 | `selecting-regression-tests`, `designing-test-automation`, `writing-api-tests`, `writing-e2e-tests` |
 | 证据与信心 | `assessing-test-confidence` |
 | 教训与项目规则 | `maintaining-project-lessons` |
