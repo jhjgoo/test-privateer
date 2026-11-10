@@ -36,20 +36,24 @@ def parse_table(row):
     row = row.strip()
     if row.startswith("|"):
         row = row[1:]
-    if row.endswith("|") and not row.endswith("\\|"):
-        row = row[:-1]
-    cells, current, escaped = [], [], False
-    for char in row:
-        if char == "|" and not escaped:
+    cells, current = [], []
+    trailing_separator = False
+    for index, char in enumerate(row):
+        trailing_separator = False
+        if char == "|":
+            content = "".join(current)
+            backslashes = len(content) - len(content.rstrip("\\"))
+            if backslashes % 2:
+                current.pop()  # Only the table delimiter escape is consumed.
+                current.append(char)
+                continue
             cells.append("".join(current).strip())
             current = []
-            continue
-        if char == "\\" and not escaped:
-            escaped = True
-            continue
-        current.append(char)
-        escaped = False
-    cells.append("".join(current).strip())
+            trailing_separator = index == len(row) - 1
+        else:
+            current.append(char)
+    if not trailing_separator:
+        cells.append("".join(current).strip())
     return cells
 
 
@@ -83,6 +87,8 @@ def case_topics(header, row):
         ("证据", row_value(header, row, "需要保留什么")),
         ("依据", row_value(header, row, "关联风险／依据")),
     ]
+    known = CASE_COLUMNS | {"要检查什么", "本轮安排", "当前条件", "需要保留什么", "关联风险／依据"}
+    fields.extend((name, value) for name, value in zip(header, row) if name not in known)
     children = []
     for label, value in fields:
         values = split_cell(value) or ["待确认"]
@@ -93,18 +99,18 @@ def case_topics(header, row):
 class TreeBuilder:
     def __init__(self, title):
         self.root = topic(title)
-        self.parents = [self.root]
+        self.parents = [(0, self.root)]
 
     @property
     def current(self):
-        return self.parents[-1]
+        return self.parents[-1][1]
 
     def add_heading(self, level, title):
         node = topic(title)
-        parent = self.parents[min(level - 1, len(self.parents) - 1)]
-        parent.setdefault("children", {"attached": []})["attached"].append(node)
-        self.parents = self.parents[:level]
-        self.parents.append(node)
+        while len(self.parents) > 1 and self.parents[-1][0] >= level:
+            self.parents.pop()
+        self.current.setdefault("children", {"attached": []})["attached"].append(node)
+        self.parents.append((level, node))
 
     def add_case(self, header, row):
         current = self.current
@@ -123,46 +129,45 @@ def document_title(markdown, source):
 def markdown_to_topic(markdown, source):
     tree = TreeBuilder(document_title(markdown, source))
     lines = markdown.splitlines()
-    in_code = False
     skip_level = None
     index = 0
     while index < len(lines):
         line = lines[index]
-        if line.lstrip().startswith("```"):
-            in_code = not in_code
-            index += 1
-            continue
-        if not in_code and line.startswith("#"):
-            level = len(line) - len(line.lstrip("#"))
-            title = line.lstrip("#").strip()
+        heading = re.match(r"^(#{1,6}) +(.+)$", line)
+        if heading:
+            level, title = len(heading[1]), heading[2].strip()
             if skip_level is not None and level <= skip_level:
                 skip_level = None
-            if skip_level is not None:
-                index += 1
-                continue
-            if title and title.startswith(SKIPPED_HEADING_PREFIXES):
-                skip_level = level
-            elif title and not (level == 1 and title == tree.root["title"]):
-                tree.add_heading(level, title)
+            if skip_level is None:
+                if title.startswith(SKIPPED_HEADING_PREFIXES):
+                    skip_level = level
+                elif not (level == 1 and title == tree.root["title"]):
+                    tree.add_heading(level, title)
             index += 1
             continue
-        if not in_code and line.lstrip().startswith("|") and index + 1 < len(lines):
-            header = [cell.casefold() for cell in parse_table(lines[index])]
-            if not is_table_boundary(lines[index + 1]):
-                index += 1
-                continue
+        if skip_level is not None or not line.strip():
+            index += 1
+            continue
+        if line.lstrip().startswith(("```", "~~~")) or line.startswith(("  ", "\t")):
+            raise ValueError(f"{source}:{index + 1}: normalize fenced or indented details before export")
+        if line.startswith("|"):
+            header = [cell.casefold() for cell in parse_table(line)]
+            if index + 1 >= len(lines) or not is_table_boundary(lines[index + 1]):
+                raise ValueError(f"{source}:{index + 1}: missing table separator")
             names = set(header)
-            if names & IGNORED_TABLE_COLUMNS:
-                index += 1
-                continue
-            if CASE_COLUMNS.issubset(names):
-                index += 2
-                while index < len(lines) and lines[index].lstrip().startswith("|"):
+            ignored = not (names & CASE_COLUMNS) and bool(names & IGNORED_TABLE_COLUMNS)
+            if not ignored and (not CASE_COLUMNS.issubset(names) or len(names) != len(header)):
+                raise ValueError(f"{source}:{index + 1}: unsupported or duplicate case columns; normalize first")
+            index += 2
+            while index < len(lines) and lines[index].lstrip().startswith("|"):
+                if not ignored:
                     row = parse_table(lines[index])
-                    if len(row) == len(header):
-                        tree.add_case(header, row)
-                    index += 1
-                continue
+                    if len(row) != len(header) or not row_value(header, row, "ID"):
+                        raise ValueError(f"{source}:{index + 1}: invalid case row; expected {len(header)} columns and an ID")
+                    tree.add_case(header, row)
+                index += 1
+            continue
+        tree.current.setdefault("children", {"attached": []})["attached"].append(topic(line))
         index += 1
     return tree.root
 
@@ -195,6 +200,8 @@ def convert(source, destination=None):
     source = Path(source)
     markdown = source.read_text(encoding="utf-8")
     output = Path(destination) if destination else source.with_suffix(".xmind")
+    if source.resolve() == output.resolve():
+        raise ValueError("output must not overwrite the authoritative Markdown source")
     write_xmind(markdown_to_topic(markdown, source), output)
     return output
 
@@ -225,6 +232,16 @@ def self_test():
         assert count_titles(sheet["rootTopic"], "C-001") == 1
         assert count_titles(sheet["rootTopic"], "显示必填提示") == 1
         assert count_titles(sheet["rootTopic"], "执行记录") == 0
+        assert parse_table(r"| C:\temp\file.txt | \d+ | \n | a\|b |") == [
+            r"C:\temp\file.txt", r"\d+", r"\n", "a|b"
+        ]
+        detail = markdown_to_topic(
+            "# Cases\n## tc-P0\n- 准备和操作\n## 附录\n- 旧记录\n## tc-P1\n- 新详情\n",
+            source,
+        )
+        assert [n["title"] for n in detail["children"]["attached"]] == ["tc-P0", "tc-P1"]
+        assert count_titles(detail, "准备和操作") == 1
+        assert count_titles(detail, "旧记录") == 0
 
 
 def main():
@@ -239,7 +256,10 @@ def main():
         return
     if not args.source:
         parser.error("source is required unless --self-test is used")
-    output = convert(args.source, args.output)
+    try:
+        output = convert(args.source, args.output)
+    except ValueError as error:
+        parser.error(str(error))
     print(f"XMind exported: {output}")
 
 

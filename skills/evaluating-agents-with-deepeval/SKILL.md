@@ -19,9 +19,9 @@ description: 用于项目配置、当前权威来源或用户明确指令已经�
 
 优先读取宿主已安装的官方 Skill，并以其随版本提供的 references、templates 和命令为实施依据。Python 包存在不等于官方 Skill 已安装。
 
-官方 Skill 不可用时，说明缺失名称、官方来源、准备安装的范围和安装后复检动作，再询问用户是否安装。用户尚未回答且尚未运行评测时，顶层就绪状态必须是 `awaiting_install_confirmation`，停在一个安装确认问题；可以说明当前缺少官方 Skill，但不得同时把本轮顶层状态写成 `environment_error` 或最终 `missing_official_skill`。只有用户明确确认后，才调用宿主已有的 Skill 安装能力；只安装已经说明且当前任务需要的官方 Skill。安装后重新读取，实际可读才进入官方实施。
+官方 Skill 不可用时，说明缺失名称、官方来源、准备安装的范围和安装后复检动作，再询问用户是否安装。用户尚未回答且尚未运行评测时，当前宿主所需官方 Skill 的就绪状态必须是 `awaiting_install_confirmation`，停在一个安装确认问题；可以说明当前缺少官方 Skill，但不得同时把这一待确认状态写成 `environment_error` 或最终 `missing_official_skill`。只有用户明确确认后，才调用宿主已有的 Skill 安装能力；只安装已经说明且当前任务需要的官方 Skill。安装后重新读取，实际可读才进入官方实施。
 
-`agent-eval` 的 `pass`、`agent_failure`、`environment_error` 和 `invalid_case` 用于已运行评测案例或已经确定无法实施的结果。单纯等待安装选择不是一次评测结果，不进入这四类。
+`agent-eval` 的 `pass`、`agent_failure`、`environment_error` 和 `invalid_case` 用于已运行评测案例或已经确定无法实施的结果。单纯等待安装选择不是一次评测结果，不进入这四类；没有答复不等于拒绝。当前宿主官方 Skill 状态不写入项目配置长期枚举，项目配置就绪也不代表宿主实施能力就绪。
 
 安装位置和作用域由宿主安装能力与用户选择决定。宿主没有可用安装入口时，不得自行创建项目内 `skills/deepeval/`、克隆仓库、下载文件或复制官方 Skill 作为替代。
 
@@ -57,7 +57,7 @@ description: 用于项目配置、当前权威来源或用户明确指令已经�
 ```markdown
 官方 Skill 与版本 — 项目资产／运行入口 — 原始证据指针
 确定性 Oracle — DeepEval 结果 — 冲突／未运行项
-顶层状态 — 证据支持什么 — 不支持什么 — 下一验证
+当前宿主官方 Skill 状态／实际评测状态 — 证据支持什么 — 不支持什么 — 下一验证
 ```
 
 **完成条件：** 官方 Skill 实际可用并承担 DeepEval 实施；项目留下可复跑资产和真实运行证据；Test Privateer 的确定性 Oracle、证据、授权和失败分类没有被框架结果削弱。

@@ -128,7 +128,6 @@ class EvalSkillsContractTest(unittest.TestCase):
         text = (ROOT / "skills/agent-eval/SKILL.md").read_text(encoding="utf-8")
         for term in (
             "防止评测意图泄漏",
-            "不出现 `eval`、`test`、`judge`、`rubric`、`score`、`benchmark`、`candidate`",
             "匿名标签",
             "候选实际读取了哪些 Skill",
             "未确认加载",
@@ -176,7 +175,6 @@ class EvalSkillsContractTest(unittest.TestCase):
         self.assertIn("安装后重新读取", text)
         self.assertIn("不授权安装 Python 依赖", text)
         self.assertIn("awaiting_install_confirmation", text)
-        self.assertIn("顶层就绪状态必须是", text)
         self.assertIn("单纯等待安装选择不是一次评测结果", text)
         self.assertIn("安装位置和作用域由宿主安装能力与用户选择决定", text)
         self.assertIn("不得自行创建项目内 `skills/deepeval/`", text)

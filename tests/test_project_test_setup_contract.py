@@ -50,8 +50,7 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             "事实和来源索引",
             "不得复制、引用或回显",
             "相对项目根目录",
-            "after_write",
-            "删除无效配置",
+            "prepare_candidate",
             "不在项目中留下第二份配置",
             "不运行产品测试",
             "不安装",
@@ -64,15 +63,29 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             "当前宿主的就绪结果只在本轮报告",
             "missing_official_skill",
             "awaiting_install_confirmation",
-            "顶层就绪状态必须是",
-            "不得同时把本轮顶层状态写成 `environment_error`",
             "安装位置和作用域由宿主安装能力与用户选择决定",
             "不得自行创建项目内 `skills/deepeval/`",
             "判断是否配置完整 Test Loop",
             "`inherited_from_source`",
             "`pending_user_confirmation`",
             "完整 Loop 就绪状态必须为 `blocked`",
-            "不生成验证器、TCO、测试资产、CI 或测试代码",
+            "通过 `mapping-project-test-space` 初始化或校准项目 TCO",
+            "TCO 是普通项目初始化的核心产物",
+            "partial: tco_not_initialized",
+            "不能用空标题或模板占位冒充全景图",
+            "不生成验证器、需求测试资产、CI 或测试代码",
+            "test-privateer-project-profile/v2",
+            "顶层 Setup 状态使用",
+            "轻量六段式 Harness",
+            "`not_configured`",
+            "`partial`",
+            "`declared_unverified`",
+            "`verified`",
+            "不得新增 `stale` 状态",
+            "用一个权威资产索引统一记录",
+            "不创建空目录或占位文件",
+            "每个已调查的候选测试表面都保留一行",
+            "Harness 状态只使用",
         ):
             self.assertIn(term, text)
 
@@ -85,12 +98,12 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             "<!-- test-privateer-managed:end -->",
             "适用范围",
             "权威来源",
-            "测试入口与资产位置",
+            "Setup 状态",
+            "权威测试资产索引",
             "测试框架与驱动约定",
             "环境与安全边界",
             "身份、数据准备和清理",
             "质量门槛与责任角色",
-            "证据位置、敏感性和保留策略",
             "缺陷平台与 Finding 升级边界",
             "验证器与健康检查入口",
             "盲测子代理隔离输出",
@@ -105,6 +118,37 @@ class ProjectTestSetupContractTest(unittest.TestCase):
         self.assertIn("不复制", text)
         self.assertIn("不相对本文件使用 `../`", text)
         self.assertIn("不得读取、复制或回显秘密值", text)
+
+    def test_profile_template_exposes_setup_surface_and_asset_state(self):
+        text = self.read(
+            "skills/setup-test-privateer/references/project-profile-template.md"
+        )
+        for term in (
+            "配置契约版本",
+            "test-privateer-project-profile/v2",
+            "Setup 状态",
+            "最近校准时间",
+            "依据版本或来源快照",
+            "失效条件",
+            "当前阻塞",
+            "恢复入口",
+            "Harness 状态",
+            "六段入口／缺口",
+            "最近长期证据",
+            "`not_configured`",
+            "`partial`",
+            "`declared_unverified`",
+            "`verified`",
+            "适用性未知时写待确认和取证动作",
+            "`not_applicable` 需要项目来源或用户决定",
+            "权威测试资产索引",
+            "维护责任",
+            "访问边界",
+            "保留／失效条件",
+            "盲测子代理隔离输出",
+        ):
+            self.assertIn(term, text)
+        self.assertNotIn("## 证据位置、敏感性和保留策略", text)
 
     def test_router_exposes_setup_without_making_it_mandatory(self):
         router = self.read("skills/test-privateer/SKILL.md")
@@ -131,6 +175,61 @@ class ProjectTestSetupContractTest(unittest.TestCase):
         self.assertIn("用户明确指令", router)
         self.assertIn("不得因为已有专项 Skill 自动选择", setup)
         self.assertIn("自有框架", router)
+
+    def test_ordinary_setup_confirms_test_surfaces_and_governance(self):
+        setup = self.read("skills/setup-test-privateer/SKILL.md")
+        template = self.read(
+            "skills/setup-test-privateer/references/project-profile-template.md"
+        )
+        for term in (
+            "不是 Loop 专属字段",
+            "普通 Setup 也调查",
+            "测试框架选择属于普通 Setup",
+            "没有入口不等于不需要",
+            "已有单元框架也不代表其他表面已配置",
+            "等待确认",
+            "不把未知默认为不适用",
+        ):
+            self.assertIn(term, setup)
+        for term in (
+            "该核对适用于普通 Setup",
+            "缺少框架不代表不需要该类测试",
+            "当前不开展须有明确决定",
+            "CI 必需检查与门禁含义",
+            "项目治理前置项",
+            "Harness 状态",
+            "权威测试资产索引",
+        ):
+            self.assertIn(term, template)
+
+    def test_setup_bootstraps_tco_without_duplicating_mapping_method(self):
+        setup = self.read("skills/setup-test-privateer/SKILL.md")
+        mapping = self.read("skills/mapping-project-test-space/SKILL.md")
+        template = self.read(
+            "skills/setup-test-privateer/references/project-profile-template.md"
+        )
+        for term in (
+            "读取 `mapping-project-test-space/SKILL.md`",
+            "唯一 `testing/TCO.md`",
+            "建立有依据的草案",
+            "项目目标与使用者",
+            "关键业务／系统链",
+            "覆盖节点与已有保护",
+            "长期风险／未知",
+            "只要已有证据足以形成项目基线",
+            "partial: tco_not_initialized",
+            "不能宣称 Setup 完成",
+            "不写入长期项目配置",
+            "只能依据当前工具轨迹",
+            "不得用配置草稿或模型自述",
+        ):
+            self.assertIn(term, setup)
+        for method in ("SFDIPOT", "MFQ", "analyzing-product-risks"):
+            self.assertIn(method, mapping)
+        self.assertIn(
+            "| 项目 TCO | `testing/TCO.md`", template
+        )
+        self.assertIn("缺失原因和恢复入口", template)
 
     def test_profile_updater_creates_replaces_and_preserves_human_content(self):
         update_profile = self.load_updater().update_profile
@@ -182,7 +281,7 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 path.write_text("corrupted", encoding="utf-8")
 
             with self.assertRaises(ProfileReadbackError):
-                update_profile(project, "## 权威来源\n", after_write=corrupt)
+                update_profile(project, "## 权威来源\n", prepare_candidate=corrupt)
             self.assertFalse((project / ".test-privateer/project.md").exists())
 
         with tempfile.TemporaryDirectory() as directory:
@@ -197,7 +296,7 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 update_profile(
                     project,
                     "## 权威来源\n\n- `.github/workflows/ci.yml`\n",
-                    after_write=corrupt_existing,
+                    prepare_candidate=corrupt_existing,
                 )
             self.assertEqual(path.read_text(encoding="utf-8"), original)
 
@@ -229,7 +328,7 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 updater.update_profile(missing, "## 权威来源\n")
             self.assertFalse(missing.exists())
 
-    def test_profile_updater_restores_after_callback_errors_and_permission_changes(self):
+    def test_profile_updater_preserves_target_after_candidate_errors_and_permissions(self):
         updater = self.load_updater()
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory)
@@ -247,7 +346,7 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 updater.update_profile(
                     project,
                     "## 权威来源\n\n- `.github/workflows/ci.yml`\n",
-                    after_write=corrupt_then_fail,
+                    prepare_candidate=corrupt_then_fail,
                 )
             self.assertEqual(path.read_text(encoding="utf-8"), original)
             self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
@@ -261,21 +360,21 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             updater.update_profile(
                 project,
                 "## 权威来源\n\n- `README.md`\n",
-                after_write=recreate_with_broader_mode,
+                prepare_candidate=recreate_with_broader_mode,
             )
             self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
 
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory)
 
-            def delete_after_write(path: Path) -> None:
+            def delete_prepare_candidate(path: Path) -> None:
                 path.unlink()
 
             with self.assertRaises(updater.ProfileReadbackError):
                 updater.update_profile(
                     project,
                     "## 权威来源\n\n- `README.md`\n",
-                    after_write=delete_after_write,
+                    prepare_candidate=delete_prepare_candidate,
                 )
             self.assertFalse((project / ".test-privateer/project.md").exists())
 
@@ -318,7 +417,7 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 updater.update_profile(
                     project,
                     "## 权威来源\n",
-                    after_write=replace_parent_with_symlink,
+                    prepare_candidate=replace_parent_with_symlink,
                 )
             self.assertEqual(
                 outside_profile.read_text(encoding="utf-8"), "outside\n"
@@ -460,18 +559,50 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                     builder.prepare_fixture("existing-rules", target)
             self.assertEqual(list(target.iterdir()), [])
 
+    def test_lifecycle_fixture_has_a_real_failing_signal(self):
+        builder = self.load_fixture_builder()
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            builder.prepare_fixture("lifecycle-project", project)
+            command = [sys.executable, "scripts/check_catalog.py"]
+            original = subprocess.run(command, cwd=project, capture_output=True, timeout=10)
+            self.assertEqual(original.returncode, 0, original.stderr)
+            # The driver must detect a wrong business result, not merely exit successfully.
+            (project / "src/catalog.py").write_text("def lookup(code):\n    return -1\n")
+            broken = subprocess.run(command, cwd=project, capture_output=True, timeout=10)
+            self.assertNotEqual(broken.returncode, 0)
+            self.assertIn(b"AssertionError", broken.stderr)
+
+    def test_stale_asset_fixture_exposes_real_evidence_and_a_missing_record(self):
+        builder = self.load_fixture_builder()
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            builder.prepare_fixture("stale-assets", project)
+            command = [sys.executable, "-B", "scripts/check_catalog.py", "-v"]
+            result = subprocess.run(command, cwd=project, capture_output=True, timeout=10)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn(b"Ran 2 tests", result.stderr)
+            self.assertFalse((project / "openspec/changes/catalog-check/evidence/api.txt").exists())
+            (project / "src/catalog.py").write_text("def lookup(code):\n    return 120\n")
+            broken = subprocess.run(command, cwd=project, capture_output=True, timeout=10)
+            self.assertNotEqual(broken.returncode, 0)
+            self.assertIn(b"KeyError not raised", broken.stderr)
+
     def test_behavior_eval_covers_setup_boundaries(self):
         readme = self.read("evals/project-test-setup/README.md")
         for term in (
             "已有项目规则",
             "缺少环境决定",
-            "无 TCO",
+            "默认初始化缺少 TCO",
+            "用户明确排除 TCO",
             "重复运行",
             "秘密信息",
             "回读差异",
             "项目已选框架",
             "自有 Agent 评测框架",
             "DeepEval 官方 Skill 缺失",
+            "普通配置的框架缺口",
+            "普通配置的治理缺口",
             "Skill 加载轨迹",
             "文件差异",
         ):
@@ -485,10 +616,13 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 "existing-rules.md",
                 "environment-choice.md",
                 "no-tco.md",
+                "tco-bootstrap.md",
                 "rerun-profile.md",
                 "secret-handling.md",
                 "readback-mismatch.md",
                 "selected-framework.md",
+                "ordinary-framework-scope.md",
+                "ordinary-governance-gap.md",
                 "custom-agent-framework.md",
                 "deepeval-readiness.md",
                 "loop-governance-gap.md",
@@ -496,12 +630,29 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 "loop-verifier-deferred.md",
                 "ordinary-no-profile.md",
                 "profile-conflict.md",
+                "release-scope.md",
+                "release-scope-confirmed.md",
+                "lifecycle-setup.md",
+                "lifecycle-develop.md",
+                "lifecycle-archive.md",
+                "lifecycle-unrelated.md",
+                "lifecycle-no-rules.md",
+                "mixed-install.md",
+                "aligned-install.md",
+                "stale-assets.md",
+                "late-scope.md",
+                "late-scope-confirmed.md",
             },
         )
         builder = self.load_fixture_builder()
-        self.assertEqual(set(builder.FIXTURES), {path.stem for path in (
+        inputs = {path.stem for path in (
             ROOT / "evals/project-test-setup/inputs"
-        ).glob("*.md")})
+        ).glob("*.md")}
+        shared_inputs = {
+            "release-scope-confirmed", "lifecycle-setup", "lifecycle-develop",
+            "lifecycle-archive", "lifecycle-unrelated", "lifecycle-no-rules",
+        }
+        self.assertEqual(set(builder.FIXTURES), (inputs - shared_inputs) | {"lifecycle-project"})
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
             builder.prepare_fixture("rerun-profile", target)
@@ -518,6 +669,12 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             self.assertTrue((target / "scripts/check_api.py").is_file())
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
+            builder.prepare_fixture("tco-bootstrap", target)
+            self.assertTrue((target / "docs/architecture.md").is_file())
+            self.assertTrue((target / "docs/api.md").is_file())
+            self.assertFalse((target / "testing/TCO.md").exists())
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
             builder.prepare_fixture("selected-framework", target)
             for relative in (
                 "tests/unit/example.test.ts",
@@ -525,6 +682,19 @@ class ProjectTestSetupContractTest(unittest.TestCase):
                 "e2e/smoke.spec.ts",
             ):
                 self.assertTrue((target / relative).is_file(), relative)
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            builder.prepare_fixture("ordinary-framework-scope", target)
+            self.assertTrue((target / "tests/unit/order.test.ts").is_file())
+            self.assertIn(
+                "尚未决定接口检查",
+                (target / "docs/api-contract.md").read_text(encoding="utf-8"),
+            )
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            builder.prepare_fixture("ordinary-governance-gap", target)
+            self.assertTrue((target / ".github/workflows/ci.yml").is_file())
+            self.assertFalse((target / "testing/TCO.md").exists())
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory)
             builder.prepare_fixture("profile-conflict", target)

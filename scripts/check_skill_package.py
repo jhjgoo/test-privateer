@@ -102,14 +102,26 @@ def validate_skill(path: Path) -> None:
 def routed_names(router: Path) -> set[str]:
     routing_table = False
     names: set[str] = set()
-    for line in router.read_text(encoding="utf-8").splitlines():
-        if line.startswith("## 路由当前缺口"):
+    for number, line in enumerate(router.read_text(encoding="utf-8").splitlines(), 1):
+        if line == "## 路由地图":
             routing_table = True
             continue
         if routing_table and line.startswith("## "):
             break
         if routing_table and line.startswith("|"):
-            names.update(re.findall(r"`([a-z][a-z0-9-]+)`", line))
+            cells = [cell.strip() for cell in line.strip("|").split("|")]
+            if len(cells) != 2:
+                raise IntegrityError(f"{router}:{number}: 路由表必须为两列")
+            target = cells[1]
+            if target == "使用" or re.fullmatch(r":?-{3,}:?", target):
+                continue
+            local = [part for part in target.split("→") if not part.strip().startswith("官方 ")]
+            targets = re.findall(r"`([a-z][a-z0-9-]+)`", " ".join(local))
+            if not targets:
+                raise IntegrityError(f"{router}:{number}: 无法解析本包路由目标")
+            names.update(targets)
+    if not routing_table or not names:
+        raise IntegrityError(f"{router}: 路由地图缺失或未提取有效路由")
     return names
 
 
@@ -123,7 +135,7 @@ def validate_sources(skills_root: Path, docs: tuple[Path, ...]) -> None:
     actual_names = {path.parent.name for path in entries}
     missing = routed_names(skills_root / "test-privateer" / "SKILL.md") - actual_names
     if missing:
-        raise IntegrityError(f"test-privateer routes missing skills: {', '.join(sorted(missing))}")
+        raise IntegrityError(f"{skills_root / 'test-privateer/SKILL.md'}: routes missing skills: {', '.join(sorted(missing))}")
 
     for doc in docs:
         if not doc.is_file():

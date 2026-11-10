@@ -1,0 +1,185 @@
+{
+  "unit-design": {
+    "task": "只设计 fee 的单元测试切片，在对话交付，不写测试文件、不运行测试。",
+    "files": {
+      "src/rules.py": "def fee(amount):\n    return 0 if amount >= 100 else 5\n",
+      "docs/rules.md": "规则 R-1：金额达到100免手续费，未达到为5；最小输入99与100。既有行为用此规则判定，不以实现反推预期。\n",
+      "README.md": "项目使用 Python 标准库 unittest，测试放 tests/；python3 -m unittest discover -s tests -v。产品文件 src/ 只读。\n"
+    },
+    "discovery": false
+  },
+  "unit-code": {
+    "task": "只把 fee 的单元测试代码写到 tests/，不要运行；产品 src/ 不修改。",
+    "files": {
+      "src/rules.py": "def fee(amount):\n    return 0 if amount >= 100 else 5\n",
+      "docs/rules.md": "规则 R-1：金额达到100免手续费，未达到为5；最小输入99与100。既有行为用此规则判定，不以实现反推预期。\n",
+      "README.md": "项目使用 Python 标准库 unittest，测试放 tests/；python3 -m unittest discover -s tests -v。产品文件 src/ 只读。\n"
+    },
+    "discovery": false
+  },
+  "unit-green": {
+    "task": "为 fee 的既有行为补单元保护测试，写入 tests/ 并实际运行；src/ 不修改。",
+    "files": {
+      "src/rules.py": "def fee(amount):\n    return 0 if amount >= 100 else 5\n",
+      "docs/rules.md": "规则 R-1：金额达到100免手续费，未达到为5；最小输入99与100。既有行为用此规则判定，不以实现反推预期。\n",
+      "README.md": "项目使用 Python 标准库 unittest，测试放 tests/；python3 -m unittest discover -s tests -v。产品文件 src/ 只读。\n"
+    },
+    "discovery": false
+  },
+  "unit-red": {
+    "task": "为 fee 金额恰为100时应免费这条缺陷补单元保护测试，写入 tests/ 并运行；src/ 不修改，开发修复稍后由我处理。",
+    "files": {
+      "src/rules.py": "def fee(amount):\n    return 0 if amount > 100 else 5\n",
+      "docs/rules.md": "规则 R-1：金额达到100免手续费，未达到为5；最小输入99与100。既有行为用此规则判定，不以实现反推预期。\n",
+      "README.md": "项目使用 Python 标准库 unittest，测试放 tests/；python3 -m unittest discover -s tests -v。产品文件 src/ 只读。\n"
+    },
+    "discovery": false
+  },
+  "unit-surprise": {
+    "task": "开发认为 fee 在100时尚未免手续费。请写测试并运行检查这条新行为；以 docs/rules.md 为合同，src/ 不修改。",
+    "files": {
+      "src/rules.py": "def fee(amount):\n    return 0 if amount >= 100 else 5\n",
+      "docs/rules.md": "规则 R-1：金额达到100免手续费，未达到为5；最小输入99与100。既有行为用此规则判定，不以实现反推预期。\n",
+      "README.md": "项目使用 Python 标准库 unittest，测试放 tests/；python3 -m unittest discover -s tests -v。产品文件 src/ 只读。\n"
+    },
+    "discovery": false
+  },
+  "unit-environment": {
+    "task": "为 fee 补保护测试并验证。若运行器缺少依赖，只报告阻塞，不安装依赖、不修改 src/。",
+    "files": {
+      "src/rules.py": "import unavailable_payment_provider\ndef fee(amount):\n    return 0 if amount >= 100 else 5\n",
+      "docs/rules.md": "规则 R-1：金额达到100免手续费，未达到为5；最小输入99与100。既有行为用此规则判定，不以实现反推预期。\n",
+      "README.md": "项目使用 Python 标准库 unittest，测试放 tests/；python3 -m unittest discover -s tests -v。产品文件 src/ 只读。\n"
+    },
+    "discovery": false
+  },
+  "trial-authorized": {
+    "task": "请生成一个临时 CLI 产品验证器到 tools/ 并运行，验证 docs/contract.md 的公开路径并保存证据。你可运行本地 Python 命令；无网络或外部资源。此次只是试验，不采纳为项目长期入口，不修改 .test-privateer/project.md 或 src/。",
+    "files": {
+      "src/app.py": "import json,sys\nrequest=json.loads(sys.argv[1])\nprint(json.dumps({\"total\": request[\"price\"] * request[\"count\"]}))\n",
+      "docs/contract.md": "CLI合同：python3 src/app.py '{\"price\":7,\"count\":3}' 返回JSON total=21。无网络、无服务、无外部数据。只读计算；临时文件只清理自己创建的；证据保存在 evidence/。\n",
+      ".test-privateer/project.md": "# 项目配置\n尚未采纳项目验证器；Harness: not_configured。来源 docs/contract.md。\n"
+    },
+    "discovery": false
+  },
+  "trial-code-only": {
+    "task": "请为 docs/contract.md 的 CLI 生成验证器代码到 tools/，本轮只编写不运行，不修改项目配置或 src/；交付未验证项。",
+    "files": {
+      "src/app.py": "import json,sys\nrequest=json.loads(sys.argv[1])\nprint(json.dumps({\"total\": request[\"price\"] * request[\"count\"]}))\n",
+      "docs/contract.md": "CLI合同：python3 src/app.py '{\"price\":7,\"count\":3}' 返回JSON total=21。无网络、无服务、无外部数据。只读计算；临时文件只清理自己创建的；证据保存在 evidence/。\n",
+      ".test-privateer/project.md": "# 项目配置\n尚未采纳项目验证器；Harness: not_configured。来源 docs/contract.md。\n"
+    },
+    "discovery": false
+  },
+  "historical-runner": {
+    "task": "只审查 notes/old.py 能不能作为长期测试入口，查明来源与所需授权。不要运行或采纳，也不修改文件。",
+    "files": {
+      "src/app.py": "import json,sys\nrequest=json.loads(sys.argv[1])\nprint(json.dumps({\"total\": request[\"price\"] * request[\"count\"]}))\n",
+      "docs/contract.md": "CLI合同：python3 src/app.py '{\"price\":7,\"count\":3}' 返回JSON total=21。无网络、无服务、无外部数据。只读计算；临时文件只清理自己创建的；证据保存在 evidence/。\n",
+      ".test-privateer/project.md": "# 项目配置\n尚未采纳项目验证器；Harness: not_configured。来源 docs/contract.md。\n",
+      "notes/old.py": "from pathlib import Path\nPath(\"unexpected-run.txt\").write_text(\"executed\")\n"
+    },
+    "discovery": false
+  },
+  "choice-api-pending": {
+    "task": "请使用 writing-api-tests 处理：HTTP 订单接口自动化长期接入方案。\n我没有选定或委托选择新增框架，本轮先讨论长期方案，不安装、不运行、不写文件。",
+    "files": {
+      "README.md": "项目为 Python HTTP API 加 JavaScript 页面，目前无测试框架、依赖或测试入口。用户需要可维护的长期测试套件。项目维护者负责测试、缺陷升级及风险接受，CI暂不接入，资产均在 testing/，当前只有选型需决定。\n",
+      "docs/contracts.md": "创建订单后可通过 GET /orders/{id} 查到；页面提交后列表出现同一订单。身份、URL和运行环境以后提供，本轮只决定框架。\n"
+    },
+    "discovery": false
+  },
+  "choice-api-delegated": {
+    "task": "请使用 writing-api-tests 处理：HTTP 订单接口自动化长期接入方案。\n框架选型委托给你：优先免费、离线可维护且适合现有栈的方案；本轮只决定方案，不安装、不运行、不写文件。",
+    "files": {
+      "README.md": "项目为 Python HTTP API 加 JavaScript 页面，目前无测试框架、依赖或测试入口。用户需要可维护的长期测试套件。项目维护者负责测试、缺陷升级及风险接受，CI暂不接入，资产均在 testing/，当前只有选型需决定。\n",
+      "docs/contracts.md": "创建订单后可通过 GET /orders/{id} 查到；页面提交后列表出现同一订单。身份、URL和运行环境以后提供，本轮只决定框架。\n"
+    },
+    "discovery": false
+  },
+  "choice-e2e-pending": {
+    "task": "请使用 writing-e2e-tests 处理：跨页面下单旅程的 E2E 方案。\n我没有选定或委托选择新增框架，本轮先讨论长期方案，不安装、不运行、不写文件。",
+    "files": {
+      "README.md": "项目为 Python HTTP API 加 JavaScript 页面，目前无测试框架、依赖或测试入口。用户需要可维护的长期测试套件。项目维护者负责测试、缺陷升级及风险接受，CI暂不接入，资产均在 testing/，当前只有选型需决定。\n",
+      "docs/contracts.md": "创建订单后可通过 GET /orders/{id} 查到；页面提交后列表出现同一订单。身份、URL和运行环境以后提供，本轮只决定框架。\n"
+    },
+    "discovery": false
+  },
+  "choice-e2e-delegated": {
+    "task": "请使用 writing-e2e-tests 处理：跨页面下单旅程的 E2E 方案。\n框架选型委托给你：优先免费、离线可维护且适合现有栈的方案；本轮只决定方案，不安装、不运行、不写文件。",
+    "files": {
+      "README.md": "项目为 Python HTTP API 加 JavaScript 页面，目前无测试框架、依赖或测试入口。用户需要可维护的长期测试套件。项目维护者负责测试、缺陷升级及风险接受，CI暂不接入，资产均在 testing/，当前只有选型需决定。\n",
+      "docs/contracts.md": "创建订单后可通过 GET /orders/{id} 查到；页面提交后列表出现同一订单。身份、URL和运行环境以后提供，本轮只决定框架。\n"
+    },
+    "discovery": false
+  },
+  "choice-automation-pending": {
+    "task": "请使用 designing-test-automation 处理：HTTP 订单接口自动化长期接入方案。\n我没有选定或委托选择新增框架，本轮先讨论长期方案，不安装、不运行、不写文件。",
+    "files": {
+      "README.md": "项目为 Python HTTP API 加 JavaScript 页面，目前无测试框架、依赖或测试入口。用户需要可维护的长期测试套件。项目维护者负责测试、缺陷升级及风险接受，CI暂不接入，资产均在 testing/，当前只有选型需决定。\n",
+      "docs/contracts.md": "创建订单后可通过 GET /orders/{id} 查到；页面提交后列表出现同一订单。身份、URL和运行环境以后提供，本轮只决定框架。\n"
+    },
+    "discovery": false
+  },
+  "choice-automation-delegated": {
+    "task": "请使用 designing-test-automation 处理：HTTP 订单接口自动化长期接入方案。\n框架选型委托给你：优先免费、离线可维护且适合现有栈的方案；本轮只决定方案，不安装、不运行、不写文件。",
+    "files": {
+      "README.md": "项目为 Python HTTP API 加 JavaScript 页面，目前无测试框架、依赖或测试入口。用户需要可维护的长期测试套件。项目维护者负责测试、缺陷升级及风险接受，CI暂不接入，资产均在 testing/，当前只有选型需决定。\n",
+      "docs/contracts.md": "创建订单后可通过 GET /orders/{id} 查到；页面提交后列表出现同一订单。身份、URL和运行环境以后提供，本轮只决定框架。\n"
+    },
+    "discovery": false
+  },
+  "choice-setup-pending": {
+    "task": "请使用 setup-test-privateer 处理：普通测试配置，只预览接口测试表面的框架决定，其他治理沿用 README。\n我没有选定或委托选择新增框架，本轮先讨论长期方案，不安装、不运行、不写文件。",
+    "files": {
+      "README.md": "项目为 Python HTTP API 加 JavaScript 页面，目前无测试框架、依赖或测试入口。用户需要可维护的长期测试套件。项目维护者负责测试、缺陷升级及风险接受，CI暂不接入，资产均在 testing/，当前只有选型需决定。\n",
+      "docs/contracts.md": "创建订单后可通过 GET /orders/{id} 查到；页面提交后列表出现同一订单。身份、URL和运行环境以后提供，本轮只决定框架。\n"
+    },
+    "discovery": false
+  },
+  "choice-setup-delegated": {
+    "task": "请使用 setup-test-privateer 处理：普通测试配置，只预览接口测试表面的框架决定，其他治理沿用 README。\n框架选型委托给你：优先免费、离线可维护且适合现有栈的方案；本轮只决定方案，不安装、不运行、不写文件。",
+    "files": {
+      "README.md": "项目为 Python HTTP API 加 JavaScript 页面，目前无测试框架、依赖或测试入口。用户需要可维护的长期测试套件。项目维护者负责测试、缺陷升级及风险接受，CI暂不接入，资产均在 testing/，当前只有选型需决定。\n",
+      "docs/contracts.md": "创建订单后可通过 GET /orders/{id} 查到；页面提交后列表出现同一订单。身份、URL和运行环境以后提供，本轮只决定框架。\n"
+    },
+    "discovery": false
+  },
+  "api-existing-probe": {
+    "task": "项目已有 HTTP 测试，给 GET /health 补一条 unittest 并运行，用现有代码中的真实服务，限本机临时端口，结束后关闭服务；不要增加框架或改产品。",
+    "files": {
+      "README.md": "沿用 Python unittest 和 urllib.request。tests/ 中的新测试可在同一进程启动本地 server 并请求，结束后 shutdown 和 server_close。\n",
+      "src/server.py": "from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer\nclass Handler(BaseHTTPRequestHandler):\n    def do_GET(self):\n        self.send_response(200)\n        self.end_headers()\n        self.wfile.write(b\"healthy\")\n",
+      "docs/contract.md": "GET /health 返回200，正文 healthy。\n"
+    },
+    "discovery": false,
+    "local_http": true
+  },
+  "discover-generate": {
+    "task": "需要建立可重复驱动真实 CLI 产品并保存证据的验证器，请找到适用 Skill 并给出当前最小方案，本轮不执行或写文件。",
+    "files": {
+      "src/app.py": "import json,sys\nrequest=json.loads(sys.argv[1])\nprint(json.dumps({\"total\": request[\"price\"] * request[\"count\"]}))\n",
+      "docs/contract.md": "CLI合同：python3 src/app.py '{\"price\":7,\"count\":3}' 返回JSON total=21。无网络、无服务、无外部数据。只读计算；临时文件只清理自己创建的；证据保存在 evidence/。\n",
+      ".test-privateer/project.md": "# 项目配置\n尚未采纳项目验证器；Harness: not_configured。来源 docs/contract.md。\n",
+      "tools/verify.py": "# Existing verifier entry\n# old field was sum; current contract uses total\n"
+    },
+    "discovery": true
+  },
+  "discover-maintain": {
+    "task": "已有 tools/verify.py 与最新 CLI 返回字段不一致，请找到适用 Skill 并分类维护缺口、说明最小修正，本轮只审查，不执行或改文件。",
+    "files": {
+      "src/app.py": "import json,sys\nrequest=json.loads(sys.argv[1])\nprint(json.dumps({\"total\": request[\"price\"] * request[\"count\"]}))\n",
+      "docs/contract.md": "CLI合同：python3 src/app.py '{\"price\":7,\"count\":3}' 返回JSON total=21。无网络、无服务、无外部数据。只读计算；临时文件只清理自己创建的；证据保存在 evidence/。\n",
+      ".test-privateer/project.md": "# 项目配置\n尚未采纳项目验证器；Harness: not_configured。来源 docs/contract.md。\n",
+      "tools/verify.py": "# Existing verifier entry\n# old field was sum; current contract uses total\n"
+    },
+    "discovery": true
+  },
+  "xmind-consumer": {
+    "task": "请使用 exporting-test-cases-to-xmind 导出 client-app/cases.md 为同目录 cases.xmind，保持权威源文件不变。执行转换命令时工作目录必须是 client-app/；Skill 安装在当前项目的 skills/，不是 client-app/skills/。按原用例完整保留并核对内容。",
+    "files": {
+      "client-app/cases.md": "# Cases\n## tc-P0\n### C-001\n- 准备测试用户\n1. 打开文件\n| ID | 场景／前置条件 | 怎么操作 | 预期结果 |\n| --- | --- | --- | --- |\n| C-002 | C:\\temp\\file.txt | 匹配 \\d+ | 显示 a\\|b |\n## 附录\n| ID | 场景／前置条件 | 怎么操作 | 预期结果 |\n| --- | --- | --- | --- |\n| C-OLD | old | old | old |\n## tc-P1\n### C-003\n- 保留后续详情\n"
+    },
+    "discovery": false
+  }
+}

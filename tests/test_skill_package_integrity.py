@@ -1,4 +1,6 @@
 import tempfile
+import shutil
+import subprocess
 import unittest
 import zipfile
 from pathlib import Path
@@ -27,7 +29,7 @@ class SkillPackageIntegrityTest(unittest.TestCase):
         router = root / "skills" / "test-privateer"
         router.mkdir(parents=True, exist_ok=True)
         (router / "SKILL.md").write_text(
-            f"---\nname: test-privateer\ndescription: Router\n---\n\n# Router\n\n## 路由当前缺口\n\n| Gap | Use |\n| --- | --- |\n| demo | {route} |\n",
+            f"---\nname: test-privateer\ndescription: Router\n---\n\n# Router\n\n## 路由地图\n\n| 当前需要 | 使用 |\n| --- | --- |\n| demo | {route} |\n",
             encoding="utf-8",
         )
 
@@ -74,6 +76,31 @@ class SkillPackageIntegrityTest(unittest.TestCase):
                 archive.writestr("SKILL.md", "body")
                 archive.writestr("references/foo.md", "body")
             checker.validate_zip(package, checker.PackageProfile())
+
+    def test_real_router_is_checked_and_empty_extraction_fails(self):
+        with tempfile.TemporaryDirectory() as directory:
+            skills = Path(directory) / "skills"
+            shutil.copytree(ROOT / "skills", skills)
+            router = skills / "test-privateer/SKILL.md"
+            original = router.read_text()
+            checker.validate_sources(skills, ())
+            self.assertIn("shaping-ai-tasks", checker.routed_names(router))
+            for altered, error in (
+                (original.replace("`shaping-ai-tasks`", "`missing-audit-skill`"), "missing-audit-skill"),
+                (original.replace("## 路由地图", "## moved routes"), "路由"),
+                (original[:original.index("## 路由地图")] + "## 路由地图\n\n## 词汇\n", "路由"),
+            ):
+                with self.subTest(error=error):
+                    router.write_text(altered)
+                    with self.assertRaisesRegex(checker.IntegrityError, error):
+                        checker.validate_sources(skills, ())
+                    result = subprocess.run(
+                        [sys.executable, str(ROOT / "scripts/check_skill_package.py"), "--root", directory],
+                        capture_output=True, text=True,
+                    )
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn(str(router), result.stderr)
+                    self.assertIn(error, result.stderr)
 
 
 def re_escape(value: Path) -> str:

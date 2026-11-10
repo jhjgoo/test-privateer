@@ -14,7 +14,7 @@
 
 #### Scenario: TDD unit case
 - **WHEN** 用户要求单元测试或 TDD 切片
-- **THEN** 保留真实符号、类型、输入输出、fixture、替身、命令和实际 RED 原因；缺少源码或执行证据时保留缺口，不为通俗化删除诊断信息或编造已运行
+- **THEN** 保留真实符号、类型、输入输出、fixture、替身和执行入口；已运行时记录实际结果，适用 TDD 分支有实际 RED 时保留其原因。设计或只编写任务明确未执行，既有行为的真实首轮 GREEN 不强制转成 RED；缺少源码或执行证据时保留缺口，不为通俗化删除诊断信息或编造已运行
 
 ### Requirement: Make cases discriminating and independently usable
 用例设计 SHALL 保留独立前置、动作、观察与判定依据，并检查所选样本能否区别目标规则与合理错误实现；可执行状态依据已核实条件，不由文档完成推断。
@@ -52,11 +52,31 @@
 - **THEN** 报告 SHALL 不强制生成图或 Mermaid，不为了模板增加重复视觉
 
 ### Requirement: Export one authoritative set of cases
-XMind 导出 SHALL 复用已定稿用例的编号、内容和来源，脑图作为导出视图，不成为另一套独立维护的用例定义。
+XMind 导出 SHALL 复用已定稿用例的编号、内容和来源，脑图作为导出视图，不成为另一套独立维护的用例定义。转换 SHALL 保留编号、层级、准备、步骤、预期、来源以及路径、正则等精确符号；只处理已声明格式中的明确转义，不吞掉普通反斜杠。跳过章节 SHALL 同时排除其正文和表格。不能无损解释的正文或异常 Case 行 SHALL 定位并报告，不静默忽略后宣称完整导出。源文档 SHALL 保持不变，必要归一化只形成导出中间视图。
 
 #### Scenario: Shared preparation and case details
 - **WHEN** 源文档使用共用准备与按编号展开的详情
 - **THEN** 先按原编号整理完整可转换内容再导出，核对步骤、预期及准备缺口不丢失，不因格式转换改变测试含义
+
+#### Scenario: Literal paths and patterns are exported
+
+- **WHEN** 用例包含 `C:\temp\file.txt`、`\d+`、字面 `\n` 或转义表格竖线
+- **THEN** 转换 SHALL 在对应脑图节点保留这些内容的原意与精确符号，不把路径或正则中的反斜杠当作通用转义删除
+
+#### Scenario: Heading-based details require normalization
+
+- **WHEN** 源文档按 tc-P0、tc-P1、tc-P2 层级标题及列表正文描述用例
+- **THEN** 导出 SHALL 保留编号、层级及完整详情；无法归一化时报告具体缺口，不生成只有标题的成功交付
+
+#### Scenario: An excluded appendix contains a case table
+
+- **WHEN** 应跳过的附录章节内含历史 Case 表格
+- **THEN** 导出 SHALL 排除该章节的表格及正文，并在后续同级或更高级有效章节恢复处理
+
+#### Scenario: A case row cannot be parsed losslessly
+
+- **WHEN** Case 行缺列或包含当前转换子集无法解释的内容
+- **THEN** 导出 SHALL 报告具体位置并阻止不完整结果被宣称成功，权威源文档保持不变
 
 ### Requirement: Make human-facing testing communication proportional to the decision
 
@@ -172,6 +192,11 @@ Agent SHALL 按读者需要完成的理解、决策、执行或验收任务应�
 - **WHEN** 一次短答复无需引入新术语
 - **THEN** 不强制解释术语表；仅在术语影响理解或判定时就近解释
 
+#### Scenario: MFQ summary preserves the specialist definition
+
+- **WHEN** 共享术语解释 MFQ 的 M
+- **THEN** 摘要 SHALL 沿用专项对单个有界功能的定义并提供指针，不改写成多数功能、常用功能或频率优先策略
+
 ### Requirement: Preserve evidence identity and applicability
 
 存在轮次资产时，测试证据 SHALL 能定位到对应 Run ID、测试或 Finding ID、目标版本或快照、环境、生成时间和实际来源。合法的单会话、单项短任务没有轮次资产时，证据 SHALL 记录“无 Run ID（单项短任务）”，并用测试或 Finding ID、目标版本或快照、环境、生成时间和实际来源保持身份。报告中的摘要 SHALL 指向原始证据或说明原始证据不可访问，MUST NOT 让摘要替代原始观察。
@@ -229,3 +254,12 @@ Agent SHALL 沿用项目已确认的证据位置、访问规则和保留策略�
 
 - **WHEN** 页面驱动或选择器变化导致旧 E2E 证据无法证明当前路径
 - **THEN** Agent SHALL 标记验证资产需要复核，区分验证器漂移和产品行为变化，不删除旧证据
+
+### Requirement: Label method output with the actual evidence basis
+
+方法扫描 SHALL 依据实际读取的材料说明视角、来源和未知；输入可以是 PRD、原型、访谈、代码或运行证据，MUST NOT 将方法名或固定模板当作实际来源。推断与未观察行为 SHALL 保持可区分。
+
+#### Scenario: SFDIPOT uses a prototype and interview
+
+- **WHEN** SFDIPOT 扫描只有原型和访谈材料，没有 PRD 或运行证据
+- **THEN** Agent SHALL 标注原型／访谈来源及对应观察边界，不自称当前为 PRD 视角，也不声称运行已验证

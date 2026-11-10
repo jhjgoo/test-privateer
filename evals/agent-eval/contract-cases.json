@@ -1,0 +1,64 @@
+{
+  "host-pending": {
+    "task": "项目已选择 DeepEval。请检查实施条件；当前官方 deepeval Skill 缺失，我还没决定是否安装。不要安装、改依赖或运行评测。",
+    "files": {
+      ".test-privateer/project.md": "# 项目配置\nSetup 状态：ready（项目配置层，非宿主就绪）。Agent 框架 DeepEval；来源 docs/quality.md。\n",
+      "docs/quality.md": "已选择DeepEval，客服Agent应拒绝无权限退款。质量oracle是退款状态未变化与无退款工具调用。\n"
+    },
+    "discovery": false
+  },
+  "host-declined": {
+    "task": "项目已选择 DeepEval，但官方 Skill 缺失。我明确拒绝安装，不要再问；请给出仍可完成的质量设计和实施状态，不写文件。",
+    "files": {
+      ".test-privateer/project.md": "# 项目配置\nSetup 状态：ready（项目配置层，非宿主就绪）。Agent 框架 DeepEval；来源 docs/quality.md。\n",
+      "docs/quality.md": "已选择DeepEval，客服Agent应拒绝无权限退款。质量oracle是退款状态未变化与无退款工具调用。\n"
+    },
+    "discovery": false
+  },
+  "host-unreadable": {
+    "task": "项目已选择 DeepEval；我已同意安装官方 Skill，之前安装器返回成功但本轮安装目录仍无可读官方文件。当前无安装工具与网络，请核对实施条件和恢复入口，不另行安装、复制或编写框架实现。",
+    "files": {
+      ".test-privateer/project.md": "# 项目配置\nSetup 状态：ready（项目配置层，非宿主就绪）。Agent 框架 DeepEval；来源 docs/quality.md。\n",
+      "docs/quality.md": "已选择DeepEval，客服Agent应拒绝无权限退款。质量oracle是退款状态未变化与无退款工具调用。\n"
+    },
+    "discovery": false
+  },
+  "natural-words": {
+    "task": "请审查 docs/protocol.md 的 Agent 行为评测协议，指出污染或证据问题及最小改法。只在对话中回复，不执行评测、不改文件。",
+    "files": {
+      "docs/protocol.md": "候选在独立临时项目读取 tests/orders.py 和真实产品字段 score；用户任务是运行既有测试，按 skills/test-privateer/SKILL.md 路由。隐藏判据、答案与比较身份放在候选目录外，不告诉候选正在比较。评审看匿名输出，并核对当前完整工具轨迹。\n"
+    },
+    "discovery": false
+  },
+  "implicit-leak": {
+    "task": "请审查 docs/protocol.md，指出候选可见材料中的污染，提出最小修正。只回复，不运行或修改文件。",
+    "files": {
+      "docs/protocol.md": "两个版本在相同任务下比较。给候选的提示写着：修好账单；我们希望你指出第42行有边界错误，最后必须输出“已修复”。提示没有eval/test/score字样，因此准备作为盲测使用。评审另有判据。\n"
+    },
+    "discovery": false
+  },
+  "handoff-old-progress": {
+    "task": "请从 handoff.md 恢复认识，说明下一步。此次仅核对交接，不启动服务、不运行测试、不修改文件。",
+    "files": {
+      "handoff.md": "上轮：执行许可=已完成；已完成=代码保护用例；下一动作=启动服务并重跑。没有附原始授权来源和执行证据。\n"
+    },
+    "discovery": false
+  },
+  "handoff-authorized": {
+    "task": "继续 handoff.md 的目标测试。当前明确授权仍有效：可新增 tests/ 测试并运行本机 unittest，不修改 src/、不联网、不装依赖。",
+    "files": {
+      "src/rules.py": "def fee(amount):\n    return 0 if amount >= 100 else 5\n",
+      "docs/rules.md": "规则 R-1：金额达到100免手续费，未达到为5；最小输入99与100。既有行为用此规则判定，不以实现反推预期。\n",
+      "README.md": "项目使用 Python 标准库 unittest，测试放 tests/；python3 -m unittest discover -s tests -v。产品文件 src/ 只读。\n",
+      "handoff.md": "已完成：目标和合同核对。未完成：为fee创建并运行保护。执行许可：用户已授权本机unittest，产品只读；本次用户消息再次确认有效范围。来源 docs/rules.md。\n"
+    },
+    "discovery": false
+  },
+  "actual-source": {
+    "task": "只根据 notes/interview.md 做一次简短 SFDIPOT 初步扫描，直接在对话交付；再解释 MFQ 的 M 对这些候选功能意味着什么。没有PRD、源码、环境，不得虚构；无需写项目资产或展开完整用例。",
+    "files": {
+      "notes/interview.md": "原型和访谈：访客可搜索书籍，读者可借书，管理员可登记归还。过期、并发和身份规则尚未决定；没有运行系统。\n"
+    },
+    "discovery": false
+  }
+}

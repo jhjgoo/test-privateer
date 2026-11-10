@@ -39,7 +39,7 @@ npx skills add jhjgoo/test-privateer --list
 
 也可以直接调用方法 Skill，例如：
 
-- `setup-test-privateer`：调查项目事实并建立可重复更新的测试配置入口
+- `setup-test-privateer`：建立项目配置与 TCO，并将按影响维护测试资产的收尾约定接入项目协作入口
 - `running-test-loop`：在一个有界授权内连续推进分析、设计、执行、调查、回归和报告
 - `scanning-product-with-sfdipot`
 - `analyzing-test-space-with-mfq`

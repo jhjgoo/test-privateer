@@ -44,7 +44,7 @@ description: 用于跨页面、服务或数据边界的业务旅程需要端到�
 
 ## 4. 复用工具，按需使用 AI
 
-已有合适框架就直接编写。无合适框架时按目标与技术栈选择最小工具；选中 tester-army e2e 后才读取[官方接入参考](references/e2e-integration.md)，再读取匹配版本的官方 Skill。它负责工具操作，不决定产品预期。
+已有合适框架就直接编写。无合适框架时读取[框架与入口选型](../designing-test-automation/references/harness-readiness.md#框架与入口选型)，在明确委托范围内选择最小工具，未委托的实质选型先确认；选中 tester-army e2e 后才读取[官方接入参考](references/e2e-integration.md)，再读取匹配版本的官方 Skill。它负责工具操作，不决定产品预期。
 
 确定性测试不需要模型凭证。选择 AI 操作时，每次给一个清楚目标，真实参数独立传递；操作后用明确断言核对业务结果。
 

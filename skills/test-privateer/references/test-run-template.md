@@ -52,6 +52,16 @@ Run ID：`RUN-<YYYYMMDD>-<NNN>`。序号按当前项目和日期递增；创建�
 | 测试用例 |  | 当前有效／需要复核／已被替代 |  |
 | 信心报告 |  | 当前有效／需要复核／已被替代 |  |
 
+## 本轮测试面与 Harness
+
+只记录本轮按风险选中的测试表面，不复制项目配置或 Harness 正文。状态快照来自当前有效项目来源；本轮实际执行和证据决定当前用例结论。
+
+| 测试表面 | 具体主张／用例 | Harness 来源与状态快照 | 本轮覆盖段 | 实际执行／证据指针 | Restore／残留 | 未覆盖或受阻 |
+| --- | --- | --- | --- | --- | --- | --- |
+|  |  | `not_configured`／`partial`／`declared_unverified`／`verified`／`blocked`／`not_applicable` | `Prepare`／`Start`／`Drive`／`Observe`／`Preserve`／`Restore` |  |  |  |
+
+Harness `verified`、单项测试判定、轮次状态和测试信心分别维护。首个适用执行已经提供六段证据时直接复用，不为更新状态重复运行；产品断言失败不等于 Harness 失效。
+
 ## 证据索引
 
 | 证据指针 | 关联测试或 Finding ID | 目标版本 | 环境 | 生成时间 | 实际来源 | 敏感性／访问边界 | 保留期限／失效条件 | 适用性 |

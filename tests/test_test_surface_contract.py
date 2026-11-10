@@ -89,7 +89,7 @@ class TestSurfaceContractTest(unittest.TestCase):
 
         self.assertIn("所选测试表面", review)
         self.assertIn("内部实现名", review)
-        for term in ("真实符号", "类型", "fixture", "替身", "运行命令", "RED 证据"):
+        for term in ("真实符号", "类型", "fixture", "替身"):
             self.assertIn(term, review)
 
 

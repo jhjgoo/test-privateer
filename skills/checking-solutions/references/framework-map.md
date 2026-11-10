@@ -22,4 +22,4 @@
 - Cucumber BDD: https://cucumber.io/docs/bdd/
 - Example Mapping: https://cucumber.io/docs/bdd/example-mapping/
 
-详细研究记录见 `docs/research/2026-09-15-sdd-frameworks-and-spec-gate.md`。
+本表和包内 [SDD 契约链](sdd-contract-chain.md) 提供质检所需方法；上列官方来源用于需要时核对具体框架。仓库研究记录是可选背景，不是安装后必读前置。

@@ -28,23 +28,6 @@ def _read_text(path: Path) -> str:
         return handle.read()
 
 
-def _atomic_write(path: Path, content: str, mode: int) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            "w", encoding="utf-8", newline="", dir=path.parent, delete=False
-        ) as handle:
-            temporary = Path(handle.name)
-            handle.write(content)
-        temporary.chmod(mode)
-        os.replace(temporary, path)
-        temporary = None
-    finally:
-        if temporary is not None:
-            temporary.unlink(missing_ok=True)
-
-
 def _validate_profile_location(profile_dir: Path, path: Path) -> None:
     if profile_dir.is_symlink():
         raise UnmanagedProfileError("profile directory must not be a symbolic link")
@@ -54,28 +37,29 @@ def _validate_profile_location(profile_dir: Path, path: Path) -> None:
         raise UnmanagedProfileError("profile file must not be a symbolic link")
 
 
-def _restore(
-    profile_dir: Path,
-    path: Path,
-    original: str | None,
-    mode: int,
-) -> None:
-    if profile_dir.is_symlink():
-        raise UnmanagedProfileError("refusing to restore through a symbolic link")
-    if profile_dir.exists() and not profile_dir.is_dir():
-        raise NotADirectoryError(f"profile directory is not a directory: {profile_dir}")
+def _version(info: os.stat_result) -> tuple[int, ...]:
+    return (info.st_dev, info.st_ino, info.st_mode, info.st_size,
+            info.st_mtime_ns, info.st_ctime_ns)
+
+
+def _snapshot(path: Path) -> tuple[os.stat_result, str] | None:
     if path.is_symlink():
-        path.unlink()
-    if original is None:
-        path.unlink(missing_ok=True)
-    else:
-        _atomic_write(path, original, mode)
+        raise UnmanagedProfileError("profile file must not be a symbolic link")
+    try:
+        before = path.stat()
+    except FileNotFoundError:
+        return None
+    content = _read_text(path)
+    after = path.stat()
+    if _version(before) != _version(after):
+        raise ProfileReadbackError("profile changed while reading; preserve it and retry")
+    return after, content
 
 
 def update_profile(
     project: Path,
     managed_content: str,
-    after_write: Callable[[Path], None] | None = None,
+    prepare_candidate: Callable[[Path], None] | None = None,
 ) -> Path:
     project = project.resolve()
     if not project.is_dir():
@@ -90,8 +74,9 @@ def update_profile(
     path = profile_dir / "project.md"
     if path.is_symlink():
         raise UnmanagedProfileError("profile file must not be a symbolic link")
-    original = _read_text(path) if path.exists() else None
-    original_mode = stat.S_IMODE(path.stat().st_mode) if path.exists() else 0o644
+    initial = _snapshot(path)
+    original = initial[1] if initial else None
+    original_mode = stat.S_IMODE(initial[0].st_mode) if initial else 0o644
 
     if START in managed_content or END in managed_content:
         raise ValueError("managed content must not contain profile markers")
@@ -118,30 +103,62 @@ def update_profile(
             ) from error
         expected = original[:start] + block + original[end:]
 
+    profile_dir.mkdir(exist_ok=True)
+    _validate_profile_location(profile_dir, path)
+    directory_fd = os.open(profile_dir, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    candidate: Path | None = None
     try:
-        _atomic_write(path, expected, original_mode)
-        if after_write:
-            after_write(path)
+        with tempfile.NamedTemporaryFile(
+            "w", encoding="utf-8", newline="", dir=profile_dir, delete=False
+        ) as handle:
+            candidate = Path(handle.name)
+            handle.write(expected)
+        candidate.chmod(original_mode)
+        if prepare_candidate:
+            prepare_candidate(candidate)
         _validate_profile_location(profile_dir, path)
-        path.chmod(original_mode)
-        if _read_text(path) != expected:
-            raise ProfileReadbackError(
-                "profile readback differs from the confirmed draft"
-            )
-        if stat.S_IMODE(path.stat().st_mode) != original_mode:
-            raise ProfileReadbackError("profile permissions differ after writing")
+        directory = profile_dir.stat()
+        opened = os.fstat(directory_fd)
+        if (directory.st_dev, directory.st_ino) != (opened.st_dev, opened.st_ino):
+            raise ProfileReadbackError("profile directory changed; preserve current files")
+        if candidate.is_symlink():
+            raise ProfileReadbackError("candidate must not be a symbolic link")
+        candidate.chmod(original_mode)
+        prepared = _snapshot(candidate)
+        if prepared is None or prepared[1] != expected:
+            raise ProfileReadbackError("candidate differs from the confirmed draft")
+        if stat.S_IMODE(prepared[0].st_mode) != original_mode:
+            raise ProfileReadbackError("candidate permissions differ after preparation")
+        current = _snapshot(path)
+        if ((current is None) != (initial is None) or (current and initial and (
+            current[1] != initial[1] or _version(current[0]) != _version(initial[0])
+        ))):
+            raise ProfileReadbackError("profile write conflict; current file was preserved")
+        # shortcut: uncoordinated editors can race this check; use a shared lock if multi-writer isolation is required.
+        os.replace(candidate.name, path.name, src_dir_fd=directory_fd, dst_dir_fd=directory_fd)
+        candidate = None
+        _validate_profile_location(profile_dir, path)
+        published = _snapshot(path)
+        if (published is None or published[1] != expected
+                or stat.S_IMODE(published[0].st_mode) != original_mode
+                or published[0].st_ino != prepared[0].st_ino
+                or published[0].st_dev != prepared[0].st_dev):
+            raise ProfileReadbackError("profile readback mismatch; preserve current file and inspect it")
     except Exception as error:
-        try:
-            _restore(profile_dir, path, original, original_mode)
-        except Exception as restore_error:
-            raise ProfileReadbackError(
-                "profile update failed and the original state could not be restored"
-            ) from restore_error
         if isinstance(error, ProfileReadbackError):
             raise
         raise ProfileReadbackError(
-            "profile update failed; the original state was restored"
+            "profile update incomplete; current target was not rolled back; inspect it before retrying"
         ) from error
+    finally:
+        try:
+            if candidate is not None:
+                try:
+                    os.unlink(candidate.name, dir_fd=directory_fd)
+                except FileNotFoundError:
+                    pass
+        finally:
+            os.close(directory_fd)
     return path
 
 

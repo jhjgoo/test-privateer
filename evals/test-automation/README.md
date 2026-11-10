@@ -1,5 +1,9 @@
 # 自动化方法与接入评测
 
+## 契约一致性回归
+
+授权、长期采纳、单元测试分支、跨入口选型、入口发现及安装后导出的可复用输入见 [contract-cases.json](contract-cases.json)，行为判据和复跑方式见 [contract-review.md](contract-review.md)。该组记录真实加载、执行和文件变化，不沿用下方历史结果作为本轮证据。
+
 ## 第二阶段：独立编写入口
 
 当前方法入口为 designing-test-automation；明确的接口和旅程任务分别进入 writing-api-tests、writing-e2e-tests。第二阶段输入、判据及评测边界见 [revision-2.md](revision-2.md)。下文 A01—A11、安装过程和示例保留第一阶段来源，不自动视为新入口的行为证据。
