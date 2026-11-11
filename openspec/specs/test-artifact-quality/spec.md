@@ -80,7 +80,7 @@ XMind 导出 SHALL 复用已定稿用例的编号、内容和来源，脑图作�
 
 ### Requirement: Make human-facing testing communication proportional to the decision
 
-Agent SHALL 围绕读者当前任务突出重点，并使用具体、易懂且一致的用语，写清必要的对象、条件、动作与结果。测试澄清、分析、用例和报告可以按复杂度选择篇幅与版式，但精简 MUST 保留判定信息、真实符号、来源和不确定性。不得统一规定字数或段数。
+Agent SHALL 围绕读者当前任务突出重点，并使用具体、易懂且一致的用语，写清必要的对象、条件、动作与结果。测试澄清、分析、用例和报告可以按复杂度选择篇幅与版式，但精简 MUST 保留判定信息、真实符号、来源和不确定性。不得统一规定字数或段数。包括直接 Setup 在内的确认 SHALL 使用共享表达，说明决定对象、作答所需事实、推荐及关键后果；选项 SHALL 回答同一个问题。可调查的技术事实 SHALL 由 Agent 查明，MUST NOT 让用户提供未知脚本或以内部状态码代替解释。
 
 #### Scenario: A small clarification with a real business choice
 
@@ -119,6 +119,21 @@ Agent SHALL 围绕读者当前任务突出重点，并使用具体、易懂且�
 
 - **WHEN** 简短输出已准确回答当前问题，且没有影响后续工作的隐藏缺口
 - **THEN** 不为套模板增加多余背景、重复摘要、虚构待办或完整审查流程
+
+#### Scenario: Timing and implementation are mixed
+
+- **WHEN** 未来交付需要某项验证，但是否纳入当前阶段尚未决定，且尚无测试入口
+- **THEN** Agent SHALL 说明验证的实际目的、当前已知边界和各时点的影响，围绕当前范围询问；不得用“推迟或指定入口”混合时间与技术方式，也不得因尚无入口自动判为不适用
+
+#### Scenario: User already chose the scope
+
+- **WHEN** 项目来源或用户已经明确该验证本阶段不开展，并给出恢复条件
+- **THEN** Agent SHALL 沿用决定，不重复询问，不强制扩写为完整决策模板
+
+#### Scenario: Final confirmation follows a long configuration report
+
+- **WHEN** 调查或草稿已较长，但最终仍有实质范围或时点决定
+- **THEN** 最终问题 SHALL 保留业务目的、已知边界、同维选项及影响，不能回退为内部状态码或要求用户提供未知技术入口
 
 ### Requirement: Choose representations for the relationship being explained
 
@@ -263,3 +278,12 @@ Agent SHALL 沿用项目已确认的证据位置、访问规则和保留策略�
 
 - **WHEN** SFDIPOT 扫描只有原型和访谈材料，没有 PRD 或运行证据
 - **THEN** Agent SHALL 标注原型／访谈来源及对应观察边界，不自称当前为 PRD 视角，也不声称运行已验证
+
+### Requirement: Keep volatile progress in its authoritative record
+
+项目配置 SHALL 保存测试方式、治理、入口及适用证据指针；TCO SHALL 保存项目关系、覆盖与长期风险。任务勾选数、单轮步骤和局部待办 SHALL 留在原任务／Run／报告，MUST NOT 复制为长期配置或 TCO 中需要平行同步的当前进度。项目级结论 SHALL 保留来源、适用范围与版本，历史证据 SHALL 保持原始语义。
+
+#### Scenario: A local task progresses after setup
+
+- **WHEN** 一个 change 的任务从部分完成推进为全部完成
+- **THEN** 维护者 SHALL 在原账本记录进度，只在新证据改变项目覆盖或长期风险时更新相关 TCO 节点；不向配置和 TCO 同步任务数量，不把任务完成当作用户验收

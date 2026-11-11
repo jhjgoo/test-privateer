@@ -1,5 +1,12 @@
 # Tasks
 
+## 归档确认（2026-11-10）
+
+- 用户明确要求同步关闭本 change；已同步 `project-test-setup`、`test-artifact-quality`、`testing-workflow` 并归档。三份规格共新增 3 条、修改 2 条需求；合并后 45 条需求与预先计算的结果一致，保留其他变更已同步的内容。
+- 本轮 87 项测试、30 个 Skill 包检查、全部 13 项活动 change／当前规格及 27 项归档严格校验通过，diff 检查通过。归档核验记录在 `.local/validation/development-lifecycle/closure-20261110/`。
+- 本轮未修改生产 Skill，也未重跑真实模型评测；下列模型记录属于先前实施验收，快照和覆盖限制保持原义。下文“保持活动／待确认”描述当时状态，本节记录最终关闭结果。
+- `add-setup-project-verifier-handoff` 仅完成方案重新校准，保留活动、待实施，不随本次归档关闭。
+
 ## 1. 契约与作用点
 
 - [x] 1.1 完成三个规格 delta，核对既有验证器 change 和项目规则边界

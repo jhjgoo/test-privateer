@@ -174,7 +174,7 @@ Setup MUST NOT 读取、复制或回显秘密值到配置、草稿、回复、�
 
 完整 Loop 就绪状态 SHALL 至少区分 `ready`、`awaiting_user_confirmation` 和 `blocked`。`ready` 仅表示项目级架构决定可定位；不证明环境已验证、测试已运行、质量门禁已接入或当前宿主可创建子代理。当前宿主能力 SHALL 只在当轮运行观察中报告，不写入长期项目配置。
 
-Setup SHALL 调查已有验证器是否覆盖启动、就绪检查、驱动、证据、清理和并行隔离。没有可定位验证器时，Setup SHALL 推荐建立或补建验证器，并经用户确认后记录后续入口；Setup MUST NOT 为完成初始化自动生成验证器、需求测试资产或 CI。
+Setup SHALL 针对已选 Loop 范围调查六段 Harness 及并行隔离，复用已有 Runner 或验证资产组合，不要求独立验证器或未选表面同时完备。必需能力缺失时 SHALL 说明影响并提供按授权进行的专项补建交接；未取得相应授权时 MUST NOT 生成资产、执行产品测试或修改 CI。用户已确认后续补建时 SHALL 沿用决定与恢复入口；配置保存 MUST NOT 掩盖仍缺失的必需能力。
 
 #### Scenario: Governance fields are missing
 
@@ -190,6 +190,11 @@ Setup SHALL 调查已有验证器是否覆盖启动、就绪检查、驱动、�
 
 - **WHEN** 项目文档和脚本已经定义启动、就绪检查、驱动、证据、清理和隔离方式
 - **THEN** Setup SHALL 引用这些来源并将项目级 Loop 架构标为 `ready`，同时保留环境和宿主能力未验证状态
+
+#### Scenario: A nonselected surface lacks a driver
+
+- **WHEN** 本次完整 Loop 已确认范围为接口，权威入口覆盖所需能力，但 UI 缺少驱动
+- **THEN** Setup SHALL 分别记录范围及缺口，不要求补 UI 才配置接口 Loop，也不自动排除尚未决定的范围
 
 ### Requirement: Initialize the project test map during setup
 
@@ -233,7 +238,7 @@ Setup SHALL 调查已有验证器是否覆盖启动、就绪检查、驱动、�
 
 ### Requirement: Persist setup state and freshness
 
-`.test-privateer/project.md` SHALL 记录配置契约版本、顶层 Setup 状态、最近校准时间、依据版本或来源快照、失效条件、当前阻塞及恢复入口。顶层状态 SHALL 区分 `ready`、`awaiting_user_confirmation`、`partial` 和 `blocked`；`ready` 只表示项目配置、TCO、关键治理决定、适用测试表面和权威资产在项目层面可定位，MUST NOT 表示当前环境、测试、CI 或宿主能力已验证。
+`.test-privateer/project.md` SHALL 记录配置契约版本、顶层 Setup 状态、最近校准时间、依据版本或来源快照、失效条件、当前阻塞及恢复入口。顶层状态 SHALL 区分 `ready`、`awaiting_user_confirmation`、`partial` 和 `blocked`；`ready` 只表示项目配置、TCO、关键治理决定、适用测试表面和权威资产在项目层面可定位，且开发收尾约定已接入实际协作入口，MUST NOT 表示当前环境、测试、CI 或宿主能力已验证。
 
 Setup SHALL 在可定位时记录 Git 提交，否则记录实际读取的来源集合和日期，MUST NOT 编造版本。失效条件 SHALL 覆盖会改变项目测试方式的规则、产品／架构、构建／CI、测试框架或入口、TCO、治理责任及资产位置变化。
 
@@ -324,3 +329,82 @@ Setup SHALL 只调查和记录 Harness 能力，不因六段模型自动运行�
 
 - **WHEN** 用户在初始化任务中另行授权验证临时驱动，但明确尚不将其采纳为长期入口
 - **THEN** Setup SHALL 按该执行范围交接自动化专项，分别报告试验结果与采纳决定，不以未采纳阻塞获准试验，也不因试验通过自动更新长期入口或 verified 状态
+
+### Requirement: Connect setup to the project completion workflow
+
+Setup SHALL 核对项目实际读取的协作入口及其引用链，在已有等效规则时复用；缺失时在初始化授权和项目流程允许的范围内合并最小测试资产收尾约定。约定 SHALL 覆盖开发交付、验证交付和归档后的影响检查，并指向可定位的共享维护方法。Setup MUST NOT 为此修改第三方 Skill、安装钩子、强制使用 OpenSpec 或把指令保存在仅供事实索引的 project.md 中。
+
+写前 SHALL 展示实际入口及必要变更，保留无关人工内容、已有有效决定、换行和权限；重复运行 SHALL 不产生重复约定。写后 SHALL 回读规则及引用，配置只索引其位置。明确禁止规则修改、只允许预览、缺少权限或无法确定实际入口时 SHALL 报告联动尚未接通，保留 `partial` 与恢复动作；规则冲突 SHALL 保留 `blocked`，不得声称 Setup 或自动同步已完成。
+
+目标方法 SHALL 沿未来会话的实际加载优先级读取，核对必要维护内容，MUST NOT 只检查文件存在或用全局副本代替项目副本验证。缺少方法时 SHALL 保留联动缺口，按已有授权更新或请求对应作用域的更新决定，不静默覆盖项目 Skill。新增交付、维护或验收义务 SHALL 按使用方协作流程变更处理；没有产品代码变化 MUST NOT 单独成为规格豁免理由。
+
+#### Scenario: Ordinary setup connects future development sessions
+
+- **WHEN** 项目已有可读取的协作入口，但缺少测试资产收尾要求，用户要求完整初始化且未排除规则维护
+- **THEN** Setup SHALL 最小补充该入口并回读，保留既有项目规则，让新开发会话能沿规则定位维护方法
+
+#### Scenario: Equivalent policy already exists
+
+- **WHEN** 项目入口已经引用等效的维护约定
+- **THEN** Setup SHALL 核对并沿用，不追加第二份规则，不为统一措辞重写人工内容
+
+#### Scenario: User excludes changes to project rules
+
+- **WHEN** 用户允许配置和 TCO 写入，但禁止修改协作规则，且项目尚无维护约定
+- **THEN** Setup SHALL 保持规则不变，完成获准部分并报告 `partial` 及联动缺口，不把配置保存等同于持续维护接入
+
+#### Scenario: Project copy lacks the method loaded from the host copy
+
+- **WHEN** 用户调用宿主新版 Setup，未来会话优先项目 Skill，但项目同名参考缺少维护方法
+- **THEN** Setup SHALL 识别目标内容缺失，不写入失效引用或声称接通；没有包更新授权时保留部分完成，说明作用域与恢复动作
+
+#### Scenario: New completion duties require a behavior change record
+
+- **WHEN** 接入新增开发收尾义务，使用方要求协作流程变化走完整规格流程
+- **THEN** Setup SHALL 按该流程记录行为变化，不以 `skip_specs` 的语法校验通过代替适用性判断；已有等效义务且仅校准事实指针时仍可按项目规定豁免
+
+#### Scenario: Existing profile and TCO disagree with current sources
+
+- **WHEN** 校准发现长期资产中的局部待办、进度副本或 Harness 验证声明与当前来源冲突
+- **THEN** Setup SHALL 定向核对来源及必要原始证据，移除平行进度账本并修正受影响结论；无法核验时保留具体未知，不得声称已完成校准或全部 verified
+
+#### Scenario: A pending scope choice coexists with confirmed profile errors
+
+- **WHEN** 用户已授权更新已有配置，部分选择待确认，但其他状态已独立证实错误
+- **THEN** Setup SHALL 修正并回读不依赖该选择的失实字段，未决范围保持待确认，顶层使用 awaiting_user_confirmation；不只改回复中的草稿而保留失实文件，也不擅自关闭用户决定
+- **AND** 只要求预览或禁止写入时仍不得修改文件
+
+### Requirement: Offer an authorized Harness handoff and reconcile its result
+
+完整 Loop Setup 发现所选范围必要 Harness 能力缺失时，Setup SHALL 复用已有授权或提出一个具体补建问题，说明验证目的、已知缺口、拟改资产、执行动作及影响。已授权动作 SHALL 连续交给 `designing-test-automation`，不重复询问；必要决定未确认时 SHALL 保持待确认。明确拒绝或延期时 SHALL 记录当前缺口与恢复入口，不创建占位资产或反复追问。普通 Setup MUST NOT 因该交接自动扩展为完整 Loop。
+
+交接 SHALL 区分写入、执行及长期采纳授权；只要求代码或临时试验时沿其范围交付。Setup SHALL 回读实际资产、适用原始证据、清理／残留和采纳依据，再按既有 Setup、Harness、资产索引与 Loop 状态定向更新。生成 `draft` 或维护 `changed` 等本次结果 MUST NOT 写为新的长期状态或机械提升为长期 `verified`。
+
+项目已采纳、适用六段可定位且其他架构决定关闭时，未实测 Harness SHALL 为 `declared_unverified`，不单因缺少本轮实测否定 Loop 项目级 `ready`；仍缺必需段时 SHALL 保留真实缺口及 Loop `blocked`。临时环境故障 MUST NOT 覆盖有依据的长期事实。产品结果、Harness 能力与 Loop 独立盲测 SHALL 分开，构造自测 MUST NOT 替代后续独立侦察门禁。
+
+专项 SHALL 交回证据，由 Setup 唯一合成配置；写入遵循既有受管区、冲突保护及回读契约。只有长期覆盖或风险改变时 SHALL 维护 TCO；无关人工内容、历史证据及有效决定 SHALL 保持，写入失败不得声称同步成功。
+
+#### Scenario: Authorized API construction completes in the same task
+
+- **WHEN** 用户已授权在指定本地范围补齐接口支撑、执行验证并采纳长期入口
+- **THEN** Setup SHALL 读取并交接专项，在真实请求、独立观察、持久证据和清理复核后更新受影响入口及状态；不重复确认、不强制浏览器、不修改产品
+
+#### Scenario: Only code is authorized
+
+- **WHEN** 用户只授权生成资产而禁止运行
+- **THEN** Setup SHALL 接收草案且不执行产品；六段可定位但未实测为 `declared_unverified`，仍缺能力则保留真实缺口，不将 `draft` 写为长期状态
+
+#### Scenario: A temporary trial succeeds without adoption
+
+- **WHEN** 用户允许临时驱动试验但尚未采纳长期入口，试验有完整实际证据
+- **THEN** Setup SHALL 保留试验结果，不自动写入长期入口或提升长期 Harness 状态，也不以未采纳阻止获准试验
+
+#### Scenario: A claimed success lacks evidence
+
+- **WHEN** 专项声称 verified，但缺少可回读的真实观察、持久证据或资源恢复结果
+- **THEN** Setup SHALL 保留对应未验证项与恢复入口，不根据自述或零退出码提升状态
+
+#### Scenario: Self-validation is followed by a test loop request
+
+- **WHEN** 构造自测完成后，用户另行要求启动完整 Loop
+- **THEN** Agent SHALL 按现有 Loop 契约核对当前条件并执行独立侦察，不把构造自测写为独立测试结果；满足既有门禁且仍有效的证据按原规则复用

@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 import importlib.util
+import json
 import stat
 import subprocess
 import sys
@@ -12,6 +13,28 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ProjectTestSetupContractTest(unittest.TestCase):
+    def test_handoff_fixture_distinguishes_product_failure_and_preserves_evidence(self):
+        path = ROOT / "evals/project-test-setup/handoff_cases.py"
+        spec = importlib.util.spec_from_file_location("handoff_inputs", path)
+        cases = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cases)
+        for price, expected_exit in ((1200, 0), (1100, 1)):
+            with self.subTest(price=price), tempfile.TemporaryDirectory() as temp:
+                project = Path(temp)
+                (project / "src").mkdir()
+                (project / "tools").mkdir()
+                product = cases.SERVER.replace('"price": 1200', f'"price": {price}')
+                (project / "src/catalog.py").write_text(product)
+                (project / "tools/check_price.py").write_text(cases.DRIVER)
+                result = subprocess.run([sys.executable, "tools/check_price.py"], cwd=project, capture_output=True, timeout=20)
+                self.assertEqual(expected_exit, result.returncode, result.stderr)
+                evidence = project / "evidence/support-check"
+                responses = json.loads((evidence / "responses.json").read_text())
+                self.assertEqual(price, responses[1]["body"]["price"])
+                self.assertTrue(json.loads((evidence / "cleanup.json").read_text())["stopped"])
+                self.assertIn("GET /items/A17", (evidence / "server.log").read_text())
+                self.assertEqual(product, (project / "src/catalog.py").read_text())
+
     def read(self, relative_path: str) -> str:
         return (ROOT / relative_path).read_text(encoding="utf-8")
 
@@ -73,7 +96,7 @@ class ProjectTestSetupContractTest(unittest.TestCase):
             "TCO 是普通项目初始化的核心产物",
             "partial: tco_not_initialized",
             "不能用空标题或模板占位冒充全景图",
-            "不生成验证器、需求测试资产、CI 或测试代码",
+            "Setup 默认不生成验证器、需求测试资产、CI 或测试代码",
             "test-privateer-project-profile/v2",
             "顶层 Setup 状态使用",
             "轻量六段式 Harness",
