@@ -87,6 +87,7 @@ description: 黑帆测试官主入口：从测试分析、风险聚焦到用例�
 | Prompt、Skill、工具描述或 Agent 指令需要审查、比较或失败诊断 | `prompt-eval`、`agent-eval` |
 | 项目或用户已选择 DeepEval，且需要建立、运行或审查 Agent 评测 | `agent-eval` → `evaluating-agents-with-deepeval` → 官方 `deepeval` Skills |
 | 界面、交互、无障碍或任务可用性需要专项判断 | `reviewing-ui-ux` |
+| 现代 Web 实现、浏览器兼容性或旧写法需要指南／扫描审计 | `reviewing-ui-ux`（Modern Web Guidance 参考） |
 | 需要整理返工教训或提炼项目规则 | `maintaining-project-lessons` |
 
 ### 项目分析主线
