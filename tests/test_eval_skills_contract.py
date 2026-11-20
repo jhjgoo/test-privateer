@@ -34,7 +34,10 @@ class EvalSkillsContractTest(unittest.TestCase):
     def test_eval_skills_have_valid_entrypoints_and_references(self):
         expected = {
             "shaping-ai-tasks": [],
-            "prompt-eval": ["references/prompt-review-patterns.md"],
+            "prompt-eval": [
+                "references/prompt-review-patterns.md",
+                "references/skillevaluator-integration.md",
+            ],
             "agent-eval": [
                 "references/agent-quality-model.md",
                 "references/evaluator-checks.md",
@@ -57,6 +60,26 @@ class EvalSkillsContractTest(unittest.TestCase):
         self.assertIn("证据不足", text)
         self.assertNotIn("调用 `skill-eval`", text)
 
+    def test_prompt_eval_checks_enterprise_prompt_surfaces_and_program_boundaries(self):
+        text = (ROOT / "skills/prompt-eval/SKILL.md").read_text(encoding="utf-8")
+        patterns = (
+            ROOT / "skills/prompt-eval/references/prompt-review-patterns.md"
+        ).read_text(encoding="utf-8")
+        for term in (
+            "消息角色与协议层级",
+            "最小充分",
+            "结构化输出要求只约束格式",
+            "缓存命中不证明正确性",
+            "版本及回滚条件",
+        ):
+            self.assertIn(term, text)
+        for term in (
+            "缓存前缀",
+            "Schema、枚举、版本号或确定性计算",
+            "未记录实际 usage、命中、账单或延迟",
+        ):
+            self.assertIn(term, patterns)
+
     def test_agent_eval_is_quality_review_not_platform_builder(self):
         text = (ROOT / "skills/agent-eval/SKILL.md").read_text(encoding="utf-8")
         for term in (
@@ -70,6 +93,35 @@ class EvalSkillsContractTest(unittest.TestCase):
         ):
             self.assertIn(term, text)
         self.assertIn("不负责搭建评测平台", text)
+
+    def test_prompt_eval_pairs_versions_and_keeps_framework_optional(self):
+        text = (ROOT / "skills/prompt-eval/SKILL.md").read_text(encoding="utf-8")
+        integration = (
+            ROOT / "skills/prompt-eval/references/skillevaluator-integration.md"
+        ).read_text(encoding="utf-8")
+        for term in (
+            "调整前版本为基线",
+            "同一冻结案例逐例配对",
+            "独立执行会话",
+            "独立评审者",
+            "评分锁定后才揭盲",
+            "该指标同口径的调整前、后证据",
+            "有效样本数",
+            "未选框架不阻断审查",
+        ):
+            self.assertIn(term, text)
+        for term in (
+            "https://github.com/NVIDIA/SkillEvaluator",
+            "skills/skillevaluator/SKILL.md",
+            "消息角色、加载方式、工具、权限",
+            "安装后重新读取",
+            "不自动授权",
+            "不用 Skill Lift 替代版本差异",
+            "未评分不当作零分",
+            "不能因框架存在",
+        ):
+            self.assertIn(term, integration)
+        self.assertFalse((ROOT / "skills/skillevaluator").exists())
 
     def test_main_router_and_docs_expose_both_skills(self):
         main = (ROOT / "skills/test-privateer/SKILL.md").read_text(encoding="utf-8")

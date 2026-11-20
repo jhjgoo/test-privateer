@@ -1,0 +1,3 @@
+profile: test-privateer
+severity_overrides:
+  SCHEMA.author_missing: medium

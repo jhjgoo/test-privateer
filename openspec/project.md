@@ -8,7 +8,7 @@
 
 自动化方法与编写职责已分开：`designing-test-automation` 选择方法，`writing-api-tests` 与 `writing-e2e-tests` 承接具体编写与验证。复用既有工具；纯接口不强制浏览器；合适的无框架 Web 项目按需取得官方 e2e Skill。单元测试仍由 `writing-unit-tests` 编写并验证。行为契约见 [自动化规格](specs/test-automation/spec.md)，变更与验收边界见 [归档记录](changes/archive/2026-10-10-strengthen-test-automation/)，可复跑材料见 [自动化评测](../evals/test-automation/README.md)。
 
-OpenSpec 从 2026-09-28 起管理**本仓库**的变更。它不改变安装方式，不为使用方项目创建 Spec 或审批流程。`ask-matt`、`skill-eval`、Superpowers 等是外部协作能力，不属于本仓库交付和验证范围。
+OpenSpec 从 2026-09-28 起管理**本仓库**的变更。它不改变安装方式，不为使用方项目创建 Spec 或审批流程。`ask-matt`、`skill-eval`、Superpowers 等是外部协作能力，不属于本仓库交付和验证范围。NVIDIA SkillEvaluator 是本仓库维护验证器，官方 `skillevaluator` Skill 作为宿主工具使用，不属于发布包。
 
 ## 外部方法参考
 
@@ -17,8 +17,9 @@ OpenSpec 从 2026-09-28 起管理**本仓库**的变更。它不改变安装方�
 - [`mattpocock/skills`](https://github.com/mattpocock/skills)：重点参考 Skill 触发边界、跨 Skill 调用、上下文隔离、复盘和证据化协作机制。
 - [`cursor/plugins/pstack/skills`](https://github.com/cursor/plugins/tree/main/pstack/skills)：重点参考测试／工程工作流、任务推进和可验证执行实践。
 - [`confident-ai/deepeval/skills`](https://github.com/confident-ai/deepeval/tree/main/skills)：DeepEval 的数据集、tracing、指标、测试资产、运行和迭代以官方 Skills 为实现来源；本项目只维护条件路由和测试质量约束，不复制官方教程。
+- [`NVIDIA/SkillEvaluator`](https://github.com/NVIDIA/SkillEvaluator)：本仓库维护使用其官方 Skill 和固定版本 CLI；静态门禁、行为对照和证据要求见[项目验证协议](../evals/skillevaluator/README.md)。
 
-这些仓库只提供外部方法参考，不是本项目的运行时依赖。引用其中做法前，仍需结合 Test Privateer 的测试目标、证据边界、授权模型和 OpenSpec 流程审查；不直接复制其流程或默认约束。
+SkillEvaluator 不是发布包的必装依赖；维护验证按项目协议执行，`prompt-eval` 另提供客户主动选择的[框架接入参考](../skills/prompt-eval/references/skillevaluator-integration.md)，不复制仓库维护配置到使用方。其余参考的边界沿用各自说明。引用其中做法前，仍需结合 Test Privateer 的测试目标、证据边界、授权模型和 OpenSpec 流程审查；不直接复制其流程或默认约束。
 
 ## 已完成能力的历史回填
 
@@ -60,6 +61,8 @@ openspec validate --archived --strict --no-interactive
 ## 验证与版本控制
 
 常规本地检查：
+
+新增或实质修改 Skill 时，以下检查与 [SkillEvaluator 项目验证协议](../evals/skillevaluator/README.md) 配合执行。静态检查、行为回归和优化效果分别交付证据，不能相互替代。
 
 ```sh
 python3 -m unittest discover -s tests -v

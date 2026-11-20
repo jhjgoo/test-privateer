@@ -1,0 +1,8 @@
+schema_version: 1
+harbor:
+  n_attempts: 1
+  n_concurrent: 1
+skill_workspace:
+  mode: isolated
+grading:
+  mode: default
