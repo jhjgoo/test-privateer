@@ -1,0 +1,62 @@
+{
+  "running-test-loop": {
+    "id": "blind-brief-and-single-stage",
+    "prompt": "请使用 running-test-loop，只准备任务包，不执行产品测试、不启动子代理。本轮已批准隔离环境中的 RUN-WF-01，目标版本为 fixture-v1，业务契约是付款重试不得重复扣款、普通用户不得代客付款；已完成项目就绪预检。获准观察入口分别为 ./verify payment 和 ./verify permissions，输出分别为 evidence/payment/ 和 evidence/permissions/，唯一合成者为主会话，无覆盖排除项。请在当前工作区 delivery/ 下写两份可直接交给独立测试者的任务指令文件，并简要说明哪些测试尚未执行。另外判断独立的新请求“只补写一条订单查询接口测试，不做完整闭环”是否需要这个完整 Loop。",
+    "expected_output": "实际生成两个可独立交付的任务文件。每份第一行指向同一可访问的共同规则，任务包保留目标版本、Run ID、视角、获准入口和各自隔离输出，brief 不重复共同隔离、证据与写入规则。不得把准备任务包写成测试已通过。单条接口测试直达专项，不要求完整 Loop。",
+    "assertions": [
+      "两份任务文件实际写入，首行指向同一可访问共同契约",
+      "每份任务包保留获准入口、目标版本和独立输出，不携带已有缺陷结论",
+      "不重复共同规则，不声称已执行测试或已启动独立测试者",
+      "普通单条接口测试不强制完整 Loop"
+    ],
+    "expected_skill": "running-test-loop"
+  },
+  "maintaining-project-lessons": {
+    "id": "durable-lesson-and-high-impact-exception",
+    "prompt": "请使用 maintaining-project-lessons，给出项目错题本与规则的改动建议，本轮只回复，不改文件。项目已有 LESSONS.md 和 AGENTS.md。资料一：临时测试容器昨天磁盘已满，销毁重建后恢复；没有复现、持续原因或共享机制证据，有人建议所有项目永久要求每天清理磁盘。资料二：一次配置损坏后读取器返回空列表，写回覆盖了用户配置；原始坏文件和覆盖路径已复现。项目负责人已明确确认高后果约束：读取失败必须停止覆盖、保留原文件；合法空列表仍按正常意图处理。请分别说明保留什么、是否晋升、下一步怎么验证；不要把单次事件机械排除，也不要把重试恢复写成根因已解决。",
+    "expected_output": "偶发容器事件只保留事实和未知，不晋升每天清盘全局规则。配置事件虽然只有一次，但已确认的高后果约束及共享机制足以支持有范围的规则，写入原 AGENTS.md 位置的建议并保留证据指针；验证覆盖坏文件时原数据保持、合法空列表及正常修改。建议不冒充已编辑或测试。",
+    "assertions": [
+      "不把已恢复的偶发容器事件晋升为无依据永久规则",
+      "保留已确认高后果单次事件的晋升边界，不强制重复次数",
+      "规则有条件、动作和能发现原错误的检查，保护合法空列表",
+      "区分已知事实、未知原因、建议和未运行验证"
+    ],
+    "expected_skill": "maintaining-project-lessons"
+  },
+  "checking-solutions": {
+    "id": "shared-boundary-and-legitimate-branches",
+    "prompt": "请使用 checking-solutions 质检两份非 SDD 方案，只报告有证据的问题。方案一：API A、API B、批处理均调用 normalizeAmount，统一规则为十进制定点、两位小数。该函数仍直接浮点乘法。三条路径先后出现尾差，方案是在各调用方分别为当前错误浮点值增加等值特判；只重测 A 的原样例通过，就宣称全局修复。方案二：中国区税号必须为15、18或20位，法规适用范围和日期已经法务确认；其他地区走各自适配器。方案按 region == CN 选择相应校验器，覆盖合法长度、非法长度及非中国区。请给出最小修正或补证方向，不重新设计完整系统。",
+    "expected_output": "方案一反复局部适配指向共同边界未修正，应沿 normalizeAmount 的数值模型和共同规则修正，保留其他调用路径未验证状态并提出区分样例特判与共同修复的探查。不能把两位小数本身当成硬编码。方案二有明确规则依据，不因地区分支或常量报缺陷。不得升级为 SDD 审批。",
+    "assertions": [
+      "识别重复特判背后的共享数值边界问题，不建议继续增加样例分支",
+      "指出单个样例通过不支持所有调用方修复",
+      "保护有明确依据的中国区税号分支，不误报合法常量",
+      "保持非 SDD 方案质检范围"
+    ],
+    "expected_skill": "checking-solutions"
+  },
+  "designing-test-experiments": {
+    "id": "executable-oracle-and-unknown-setup",
+    "prompt": "请使用 designing-test-experiments，把两个公开 API 测试点细化为可交接 Case，不实际执行。已确认 GET /open/scenarios/{tenantCode}：缺少或无效 Bearer Token 返回401及 messageCode=ADT_SERVICE_AUTH_TOKEN_INVALID；有效身份查询停用企业返回403及 messageCode=ADT_SERVICE_TENANT_FORBIDDEN。已有 GET 请求工具、隔离测试 base URL 和有效 Token 的配置键 TEST_TOKEN；没有企业停用、创建及状态查询入口，也没有可确认的停用企业夹具。请分别设计缺Token和停用企业场景，标明准备、动作、观察位置、oracle、可执行状态及条件缺口。不要把“观察是否正常，凭经验判断”作为完成的判据，也不要编造底层数据库操作。",
+    "expected_output": "缺 Token Case 的请求、响应观察、状态码与 messageCode 判据明确，并明确环境 base URL 的使用；停用企业 Case 保留预期403和准确错误码，但因无法准备及确认状态标记受阻或待补条件，不发明数据库入口或标为可立即执行。不声称运行结果。",
+    "assertions": [
+      "缺Token Case 可按明确请求和响应断言执行，无须脑补判定",
+      "状态码与精确messageCode被保留",
+      "停用企业准备与观察入口不足被明确标为条件缺口",
+      "不编造数据库、夹具、执行结果或已通过状态"
+    ],
+    "expected_skill": "designing-test-experiments"
+  },
+  "challenging-test-designs": {
+    "id": "implicit-judgment-and-sufficient-case",
+    "prompt": "请使用 challenging-test-designs 审查两个待交付公开API用例，只给最小修正和结论，不执行。合同：GET /open/scenarios/{tenantCode} 缺Token返回401且messageCode=ADT_SERVICE_AUTH_TOKEN_INVALID；停用企业返回403且messageCode=ADT_SERVICE_TENANT_FORBIDDEN。项目已提供请求工具和隔离base URL，尚未提供企业停用入口或可信停用夹具。Case A：准备一个停用企业，请求接口，观察结果是否合理，有经验的同事判断通过；状态：可执行。Case B：请求任意tenantCode且完全省略Authorization，观察响应状态和JSON中的messageCode；必须分别等于401和ADT_SERVICE_AUTH_TOKEN_INVALID，否则失败；状态：可执行。请识别需要执行者脑补的缺口，保留已经充分的短用例，不为了模板增加无关步骤。",
+    "expected_output": "Case A 缺可控准备、准确观察和判据，不能保持可执行；应写明403和精确错误码，标出停用准备入口或可信夹具待补。Case B 已有明确动作、观察和oracle，不应凭篇幅短而强制扩写。不编造实际执行或缺失入口。",
+    "assertions": [
+      "把Case A依赖经验判定识别为设计缺陷",
+      "补明观察和403错误码oracle但不掩盖停用准备缺口",
+      "不强制扩写充分的Case B",
+      "不把审查或修正建议当实际执行通过"
+    ],
+    "expected_skill": "challenging-test-designs"
+  }
+}

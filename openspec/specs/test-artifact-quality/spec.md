@@ -287,3 +287,10 @@ Agent SHALL 沿用项目已确认的证据位置、访问规则和保留策略�
 
 - **WHEN** 一个 change 的任务从部分完成推进为全部完成
 - **THEN** 维护者 SHALL 在原账本记录进度，只在新证据改变项目覆盖或长期风险时更新相关 TCO 节点；不向配置和 TCO 同步任务数量，不把任务完成当作用户验收
+
+### Requirement: Remove execution nuance from test cases
+测试实验设计 SHALL 将可固化的准备、驱动、观察和判定信息放入 Case 字段、脚本、测试标识或断言；终稿自校 SHALL 将需要执行者凭经验解释目标、观察方式或判定规则、但能够固化的 Case 判为设计缺陷。
+
+#### Scenario: A case requires tribal knowledge to judge
+- **WHEN** 执行者只能根据未写出的经验判断某结果是否通过
+- **THEN** 终稿自校 SHALL 要求补清 oracle、观察位置或判定规则，或标明该判断为未固化的人工检查边界

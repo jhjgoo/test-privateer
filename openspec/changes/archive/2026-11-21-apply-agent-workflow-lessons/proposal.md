@@ -6,7 +6,7 @@ pstack 11 月 release 的有效方向是把子代理共同规则抽成固定入�
 
 ## What Changes
 
-- 新增盲测子代理共同契约：每个 wave 首行读取同一规则，brief 只写差异，不重复共同约束。
+- 新增盲测子代理共同契约：每个 wave 首行读取同一规则，brief 只写差异，不重复共同约束；通过小型生成脚本固定结构和相对路径，仅准备任务包时交付后停止，不推进实际 Loop。
 - 错题本候选增加持久性、行动价值和非单例筛选。
 - 方案质检增加“反复特判先检查范围／模型／oracle 错位”的断点。
 - 测试实验设计内化“减少执行 nuance”：Case 的复杂度由明确字段、入口、脚本或断言承载，质检识别需要经验脑补才能执行的设计缺陷。
@@ -19,6 +19,8 @@ pstack 11 月 release 的有效方向是把子代理共同规则抽成固定入�
 - `skills/designing-test-experiments/SKILL.md`
 - `skills/challenging-test-designs/SKILL.md`
 - `tests/test_agent_workflow_lessons_contract.py`
+- `tests/test_blind_brief_generator.py`
+- `evals/skillevaluator/workflow-lessons/`
 
 ## Non-goals
 
